@@ -1,0 +1,26 @@
+--------------------------------------------------------------
+Insertar Cliente
+
+curl -X POST -H "Content-Type: application/json" -d "{\"nombre1_cliente\":\"Kenny\",\"nombre2_cliente\":\"Antonio\",\"apellido1_cliente\":\"Tellez\",\"apellido2_cliente\":\"Obando\",\"fechanac_cliente\":\"2004-09-24\",\"telefono_cliente\":\"8334-7188\",\"email_cliente\":\"kenny@gmail.com\",\"contrasena_cliente\":\"incorrecto\"}" http://localhost:5000/crud/create
+
+Actualizar Cliente
+
+curl -X PUT -H "Content-Type: application/json" -d "{\"nombre1_cliente\":\"Gisela\",\"nombre2_cliente\":\"Paola\",\"apellido1_cliente\":\"Rocha\",\"apellido2_cliente\":\"Cruz\",\"fechanac_cliente\":\"2004-09-21\",\"telefono_cliente\":\"8331-0234\",\"email_cliente\":\"cruzrochagisela@gmail.com\",\"contrasena_cliente\":\"correcto\"}" http://localhost:5000/crud/update/1
+
+Eliminar Cliente
+curl -X DELETE http://localhost:5000/crud/delete/1
+
+--------------------------------------------------------------
+Insertar Empleado
+
+curl -X POST -H "Content-Type: application/json" -d "{\"nombre1_empleado\":\"Eliab\",\"nombre2_empleado\":\"Javier\",\"apellido1_empleado\":\"Selva\",\"apellido2_empleado\":\"Cruz\",\"especialidad_empleado\":\"Pedicurista\",\"telefono_empleado\":\"7881-8878\",\"email_empleado\":\"eliabdev@gmail.com\",\"contrasena_empleado\":\"123456\"}" http://localhost:5000/crud/create
+
+Actualizar Empleado
+
+curl -X PUT -H "Content-Type: application/json" -d "{\"nombre1_empleado\":\"Eliab\",\"nombre2_empleado\":\"Javier\",\"apellido1_empleado\":\"Selva\",\"apellido2_empleado\":\"Cruz\",\"especialidad_empleado\":\"Pedicurista\",\"telefono_empleado\":\"7881-8878\",\"email_empleado\":\"eliabdev@gmail.com\",\"contrasena_empleado\":\"acceder\"}" http://localhost:5000/crud/update/1
+
+Eliminar Empleado
+
+curl -X DELETE http://localhost:5000/crud/delete/1
+
+
