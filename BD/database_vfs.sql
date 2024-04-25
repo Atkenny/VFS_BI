@@ -120,7 +120,7 @@ CREATE TABLE `Compra` (
 
 CREATE TABLE `Tipo_pago` (
   `id_tipo_pago` integer AUTO_INCREMENT PRIMARY KEY,
-  `tipo` varchar(65) NOT NULL
+  `tipo_pago` varchar(65) NOT NULL
 );
 
 CREATE TABLE `Tipo_entrega` (
