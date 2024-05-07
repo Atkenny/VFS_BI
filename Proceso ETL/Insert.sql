@@ -60,7 +60,9 @@ VALUES
 (2, 2, 2, '2024-05-12', '15:30:00'),
 (3, 1, 1, '2024-05-14', '16:00:00'),
 (4, 3, 2, '2024-05-16', '11:00:00'),
+(5, 1, 3, '2024-05-18', '14:00:00'),
 (5, 1, 3, '2024-05-18', '14:00:00');
+
 
 INSERT INTO Detalle_compra (id_compra, id_producto, precio_unitario, cantidad_compra) 
 VALUES 
@@ -68,6 +70,7 @@ VALUES
 (1, 2, 19.99, 3),
 (2, 3, 39.99, 2),
 (3, 4, 149.99, 1),
+(4, 5, 2.99, 10),
 (4, 5, 2.99, 10);
 
 INSERT INTO Resena (id_cliente, id_producto, calificacion, comentario, fecha_publicacion, aprovacion) 
