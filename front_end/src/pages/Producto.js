@@ -18,7 +18,7 @@ function Producto({ rol }) {
     const [precio_compra, setPrecio_compra] = useState('');
     const [cantidad, setCantidad] = useState('');
     const [talla, setTalla] = useState(' ');
-    const [genero, setGenero] = useState('');
+    const [genero_producto, setGenero_producto] = useState('');
 
     const [imagen, setImagen] = useState('');
 
@@ -49,7 +49,7 @@ function Producto({ rol }) {
             precio_compra,
             cantidad,
             talla,
-            genero,
+            genero_producto,
         };
 
         try {
@@ -74,7 +74,7 @@ function Producto({ rol }) {
                 setPrecio_compra('');
                 setCantidad('');
                 setTalla('');
-                setGenero('');
+                setGenero_producto('');
             } else {
                 alert('Error al registrar el producto');
             }
@@ -226,12 +226,13 @@ function Producto({ rol }) {
                                     <FloatingLabel controlId="genero" label="Género">
                                         <Form.Select
                                             aria-label="Genero"
-                                            value={genero}
-                                            onChange={(e) => setGenero(e.target.value)}
+                                            value={genero_producto}
+                                            onChange={(e) => setGenero_producto(e.target.value)}
                                         >
                                             <option>Seleccione el género</option>
-                                            <option value="F">Femenino</option>
-                                            <option value="M">Masculino</option>
+                                            <option value="Femenino">Femenino</option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="Unisex">Unisex</option>
                                         </Form.Select>
                                     </FloatingLabel>
                                 </Col>

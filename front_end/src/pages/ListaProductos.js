@@ -18,7 +18,7 @@ function ListaProducto({ rol }) {
     precio_compra: '',
     cantidad: '',
     talla: '',
-    genero: ''
+    genero_producto: ''
   });
 
   const [categorias, setcategorias] = useState([]); // Estado para almacenar las categorías
@@ -98,7 +98,7 @@ function ListaProducto({ rol }) {
     const precio_compra = producto.precio_compra;
     const cantidad = producto.cantidad;
     const talla = producto.talla.toLowerCase();
-    const genero = producto.genero.toLowerCase();
+    const genero_producto = producto.genero_producto.toLowerCase();
     const search = searchQuery.toLowerCase();
 
 
@@ -112,7 +112,7 @@ function ListaProducto({ rol }) {
       precio_compra == (search) ||
       cantidad == (search) ||
       talla.includes(search) ||
-      genero.includes(search)
+      genero_producto.includes(search)
     );
   });
 
@@ -130,7 +130,7 @@ function ListaProducto({ rol }) {
       precio_compra: producto.precio_compra,
       cantidad: producto.cantidad,
       talla: producto.talla,
-      genero: producto.genero
+      genero_producto: producto.genero_producto
     });
     setShowModal(true);
   };
@@ -257,7 +257,7 @@ function ListaProducto({ rol }) {
                   <td>C${producto.precio_compra}</td>
                   <td>{producto.cantidad}</td>
                   <td>{producto.talla}</td>
-                  <td>{producto.genero}</td>
+                  <td>{producto.genero_producto}</td>
                   <td>
                     <Button variant="primary" onClick={() => openModal(producto)}><FaPencil /></Button>
                   </td>
@@ -397,16 +397,17 @@ function ListaProducto({ rol }) {
                   </Col>
 
                   <Col sm="12" md="6" lg="4">
-                    <FloatingLabel controlId="genero" label="Género">
+                    <FloatingLabel controlId="genero_producto" label="Género">
                       <Form.Select
-                        aria-label="genero"
-                        name="genero"
-                        value={formData.genero}
+                        aria-label="genero_producto"
+                        name="genero_producto"
+                        value={formData.genero_producto}
                         onChange={handleFormChange}
                       >
                         <option>Seleccione el género</option>
-                        <option value="F">F</option>
-                        <option value="M">M</option>
+                        <option value="Femenino">Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Unisex">Unisex</option>
                       </Form.Select>
                     </FloatingLabel>
                   </Col>

@@ -10,6 +10,7 @@ function Cliente({ rol }) {
   const [nombre2_cliente, setNombre2_cliente] = useState('');
   const [apellido1_cliente, setApellido1_cliente] = useState('');
   const [apellido2_cliente, setApellido2_cliente] = useState('');
+  const [genero, setGenero] = useState('');
   const [fechanac_cliente, setFechanac_cliente] = useState('');
   const [telefono_cliente, setTelefono_cliente] = useState('');
   const [email_cliente, setEmail_cliente] = useState('');
@@ -25,6 +26,7 @@ function Cliente({ rol }) {
       nombre2_cliente,
       apellido1_cliente,
       apellido2_cliente,
+      genero,
       fechanac_cliente,
       telefono_cliente,
       email_cliente,
@@ -43,18 +45,22 @@ function Cliente({ rol }) {
 
       if (response.ok) {
         // El registro se creó exitosamente
-        alert('Registro exitoso');
+        <div class="valid-feedback">¡Registro exitoso! 😸</div>
         // Reiniciar los campos del formulario
         setNombre1_cliente('');
         setNombre2_cliente('');
         setApellido1_cliente('');
         setApellido2_cliente('');
+        setGenero('');
         setFechanac_cliente('');
         setTelefono_cliente('');
         setEmail_cliente('');
         setContrasena_cliente('');
       } else {
         alert('Por favor complete todos los campos antes de continuar.');
+        return(
+          <div class="invalid-feedback">Por favor complete todos los campos antes de continuar. 😾</div>
+        );
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -115,6 +121,21 @@ function Cliente({ rol }) {
                     />
                   </FloatingLabel>
                 </Col>
+
+                <Col sm="12" md="6" lg="4">
+                                    <FloatingLabel controlId="genero" label="Género">
+                                        <Form.Select
+                                            aria-label="Genero"
+                                            value={genero}
+                                            onChange={(e) => setGenero(e.target.value)}
+                                        >
+                                            <option>Seleccione el género</option>
+                                            <option value="Femenino">Femenino</option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="Sin definir">Sin definir</option>
+                                        </Form.Select>
+                                    </FloatingLabel>
+                                </Col>
 
                 <Col sm="6" md="6" lg="6">
                   <FloatingLabel controlId="fechanac_cliente" label="Fecha de nacimiento">

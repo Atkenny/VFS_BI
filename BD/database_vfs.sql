@@ -41,7 +41,7 @@ SET DEFAULT ROLE  ALL TO
 
 SELECT CURRENT_ROLE();
 
-CREATE TABLE Usuario	 (
+CREATE TABLE Usuario (
   id_Usuario Int NOT NULL PRIMARY KEY AUTO_INCREMENT,
   nombre_Usuario Varchar(30) NOT NULL,
   contrasena Varchar(16) NOT NULL,
@@ -53,165 +53,168 @@ INSERT INTO Usuario (nombre_Usuario, contrasena, rol)  VALUES ('GiselaPaola','co
 INSERT INTO Usuario (nombre_Usuario, contrasena, rol)  VALUES ('KennyPaolo','incorrecto1', 'cliente');
 SELECT * FROM Usuario;
 
-CREATE TABLE `Cliente` (
-  `id_cliente` integer AUTO_INCREMENT PRIMARY KEY,
-  `nombre1_cliente` varchar(15) NOT NULL,
-  `nombre2_cliente` varchar(15) NULL,
-  `apellido1_cliente` varchar(15) NOT NULL,
-  `apellido2_cliente` varchar(15) NULL,
-  `fechanac_cliente` date NOT NULL,
-  `telefono_cliente` varchar(9) NOT NULL,
-  `email_cliente` varchar(255) NOT NULL,
-  `contrasena_cliente` varchar(50) NOT NULL,
-  `rol` Varchar(20) NOT NULL
+CREATE TABLE Cliente (
+  id_cliente integer AUTO_INCREMENT PRIMARY KEY,
+  nombre1_cliente varchar(15) NOT NULL,
+  nombre2_cliente varchar(15) NULL,
+  apellido1_cliente varchar(15) NOT NULL,
+  apellido2_cliente varchar(15) NULL,
+  genero varchar(10) NOT NULL,
+  fechanac_cliente date NOT NULL,
+  telefono_cliente varchar(9) NOT NULL,
+  email_cliente varchar(255) NOT NULL,
+  contrasena_cliente varchar(50) NOT NULL,
+  rol Varchar(20) NOT NULL
 );
 
-CREATE TABLE `Empleado` (
-  `id_empleado` integer AUTO_INCREMENT PRIMARY KEY,
-  `nombre1_empleado` varchar(15) NOT NULL,
-  `nombre2_empleado` varchar(15) NULL,
-  `apellido1_empleado` varchar(15) NOT NULL,
-  `apellido2_empleado` varchar(15) NULL,
-  `especialidad_empleado` varchar(50) NOT NULL,
-  `telefono_empleado` varchar(9) NOT NULL,
-  `email_empleado` varchar(50) NOT NULL,
-  `contrasena_empleado` varchar(16) NULL,
-  `rol` Varchar(20) NOT NULL
+CREATE TABLE Empleado (
+  id_empleado integer AUTO_INCREMENT PRIMARY KEY,
+  nombre1_empleado varchar(15) NOT NULL,
+  nombre2_empleado varchar(15) NULL,
+  apellido1_empleado varchar(15) NOT NULL,
+  apellido2_empleado varchar(15) NULL,
+  genero varchar(10) NOT NULL,
+  especialidad_empleado varchar(50) NULL,
+  telefono_empleado varchar(9) NOT NULL,
+  email_empleado varchar(50) NOT NULL,
+  contrasena_empleado varchar(16) NULL,
+  rol Varchar(20) NOT NULL
 );
 
-	CREATE TABLE `Producto` (
-	  `id_producto` integer AUTO_INCREMENT PRIMARY KEY,
-	  `id_proveedor` integer NOT NULL,
-	  `id_categoria` integer NOT NULL,
-	  `nombre_producto` varchar(30) NOT NULL,
-	  `imagen` LONGTEXT NULL,
-	  `precio_venta` decimal(12,2) NOT NULL,
-	  `precio_compra` decimal(12,2) NOT NULL,
-	  `cantidad` integer NOT NULL,
-	  `talla` varchar(20) NOT NULL,
-	  `genero` char(1) NOT NULL
+CREATE TABLE Producto (
+	id_producto integer AUTO_INCREMENT PRIMARY KEY,
+	id_proveedor integer NOT NULL,
+	id_categoria integer NOT NULL,
+	nombre_producto varchar(30) NOT NULL,
+	imagen LONGTEXT NULL,
+	precio_venta decimal(12,2) NOT NULL,
+	precio_compra decimal(12,2) NOT NULL,
+	cantidad integer NOT NULL,
+	talla varchar(20) NULL,
+	genero_producto varchar(10) NOT NULL
+);
+
+	CREATE TABLE Categoria(
+		id_categoria integer AUTO_INCREMENT PRIMARY KEY,
+		nombre_categoria varchar(50) NOT NULL,
+		descripcion_categoria varchar (255) NULL
 	);
 
-	CREATE TABLE `Categoria`(
-		`id_categoria` integer AUTO_INCREMENT PRIMARY KEY,
-		`nombre_categoria` varchar(50) NOT NULL,
-		`descripcion_categoria` varchar (255) NULL
+	CREATE TABLE Cita (
+	  id_cita integer AUTO_INCREMENT PRIMARY KEY,
+	  id_cliente integer NOT NULL,
+	  id_empleado integer NOT NULL,
+	  tipo_servicio varchar(100) NOT NULL,
+	  fecha_cita date NOT NULL,
+	  hora_cita time NOT NULL,
+	  estado_cita boolean NULL,
+	  comentario varchar(255) NULL
 	);
 
-	CREATE TABLE `Cita` (
-	  `id_cita` integer AUTO_INCREMENT PRIMARY KEY,
-	  `id_cliente` integer NOT NULL,
-	  `id_empleado` integer NOT NULL,
-	  `tipo_servicio` varchar(100) NOT NULL,
-	  `fecha_cita` date NOT NULL,
-	  `hora_cita` time NOT NULL,
-	  `estado_cita` boolean NULL,
-	  `comentario` varchar(255) NULL
-	);
-
-CREATE TABLE `Compra` (
-  `id_compra` integer AUTO_INCREMENT PRIMARY KEY,
-  `id_cliente` integer NOT NULL,
-  `id_tipo_pago` integer NOT NULL,
-  `id_entrega` integer NOT NULL,
-  `fecha_compra` date NOT NULL,
-  `hora_compra` time NOT NULL
+CREATE TABLE Compra (
+  id_compra integer AUTO_INCREMENT PRIMARY KEY,
+  id_cliente integer NOT NULL,
+  id_tipo_pago integer NOT NULL,
+  id_entrega integer NOT NULL,
+  fecha_compra date NOT NULL,
+  hora_compra time NOT NULL
 );
 
-CREATE TABLE `Tipo_pago` (
-  `id_tipo_pago` integer AUTO_INCREMENT PRIMARY KEY,
-  `tipo_pago` varchar(65) NOT NULL
+CREATE TABLE Tipo_pago (
+  id_tipo_pago integer AUTO_INCREMENT PRIMARY KEY,
+  tipo_pago varchar(65) NOT NULL
 );
 
-CREATE TABLE `Tipo_entrega` (
-  `id_entrega` integer AUTO_INCREMENT PRIMARY KEY,
-  `id_empleado` integer NOT NULL,
-  `tipo_entrega` varchar(50) NOT NULL,
-  `estado_entrega` varchar(20) NOT NULL,
-  `direccion_entrega` varchar(255) NOT NULL
+CREATE TABLE Tipo_entrega (
+  id_entrega integer AUTO_INCREMENT PRIMARY KEY,
+  id_empleado integer NOT NULL,
+  tipo_entrega varchar(50) NOT NULL,
+  estado_entrega varchar(20) NOT NULL,
+  direccion_entrega varchar(255) NOT NULL
 );
 
-CREATE TABLE `Detalle_compra` (
-  `id_detalle_c` integer AUTO_INCREMENT PRIMARY KEY,
-  `id_compra` integer NOT NULL,
-  `id_producto` integer NOT NULL,
-  `cantidad_compra` integer NOT NULL
+CREATE TABLE Detalle_compra (
+  id_detalle_c integer AUTO_INCREMENT PRIMARY KEY,
+  id_compra integer NOT NULL,
+  id_producto integer NOT NULL,
+  precio_unitario integer NOT NULL, 
+  cantidad_compra integer NOT NULL
 );
 
-CREATE TABLE `Resena` (
-  `id_resena` integer AUTO_INCREMENT PRIMARY KEY,
-  `id_cliente` integer NOT NULL,
-  `id_producto` integer NOT NULL,
-  `calificacion` integer NULL,
-  `comentario` varchar(255) NULL,
-  `fecha_publicacion` Datetime NOT NULL,
-  `aprovacion` boolean NOT NULL
+CREATE TABLE Resena (
+  id_resena integer AUTO_INCREMENT PRIMARY KEY,
+  id_cliente integer NOT NULL,
+  id_producto integer NOT NULL,
+  calificacion integer NULL,
+  comentario varchar(255) NULL,
+  fecha_publicacion Datetime NOT NULL,
+  aprovacion boolean NOT NULL
 );
 
-CREATE TABLE `ListaDeseos` (
-  `id_deseo` integer AUTO_INCREMENT PRIMARY KEY,
-  `id_cliente` integer NOT NULL,
-  `fecha_creacion` Datetime NOT NULL
+CREATE TABLE ListaDeseos (
+  id_deseo integer AUTO_INCREMENT PRIMARY KEY,
+  id_cliente integer NOT NULL,
+  fecha_creacion Datetime NOT NULL
 );
 
-CREATE TABLE `ListaDetalle` (
-  `id_listadetalle` integer AUTO_INCREMENT PRIMARY KEY,
-  `id_producto` integer NOT NULL,
-  `id_deseo` integer NOT NULL
+CREATE TABLE ListaDetalle (
+  id_listadetalle integer AUTO_INCREMENT PRIMARY KEY,
+  id_producto integer NOT NULL,
+  id_deseo integer NOT NULL
 );
 
-CREATE TABLE `Proveedor` (
-  `id_proveedor` integer AUTO_INCREMENT PRIMARY KEY,
-  `empresa_proveedor` varchar(60) NOT NULL,
-  `direccion_proveedor` varchar(255) NULL,
-  `ciudad_proveedor` varchar(50) NULL
+CREATE TABLE Proveedor (
+  id_proveedor integer AUTO_INCREMENT PRIMARY KEY,
+  empresa_proveedor varchar(60) NOT NULL,
+  direccion_proveedor varchar(255) NULL,
+  ciudad_proveedor varchar(50) NULL
 );
 
 -- Restricciones y relaciones
 -- Relación entre Cita y Cliente
-ALTER TABLE `Cita` ADD CONSTRAINT `FK_Cita_Cliente` FOREIGN KEY (`id_cliente`) REFERENCES `Cliente` (`id_cliente`);
+ALTER TABLE Cita ADD CONSTRAINT FK_Cita_Cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente);
 
 -- Relación entre Cita y Empleado
-ALTER TABLE `Cita` ADD CONSTRAINT `FK_Cita_Empleado` FOREIGN KEY (`id_empleado`) REFERENCES `Empleado` (`id_empleado`);
+ALTER TABLE Cita ADD CONSTRAINT FK_Cita_Empleado FOREIGN KEY (id_empleado) REFERENCES Empleado (id_empleado);
 
 -- Relación entre Tipo_entrega y Empleado
-ALTER TABLE `Tipo_entrega` ADD CONSTRAINT `FK_Tipo_entrega_Empleado` FOREIGN KEY (`id_empleado`) REFERENCES `Empleado` (`id_empleado`);
+ALTER TABLE Tipo_entrega ADD CONSTRAINT FK_Tipo_entrega_Empleado FOREIGN KEY (id_empleado) REFERENCES Empleado (id_empleado);
 
 -- Relación entre Producto y Proveedor
-ALTER TABLE `Producto` ADD CONSTRAINT `FK_Producto_Proveedor` FOREIGN KEY (`id_proveedor`) REFERENCES `Proveedor` (`id_proveedor`);
+ALTER TABLE Producto ADD CONSTRAINT FK_Producto_Proveedor FOREIGN KEY (id_proveedor) REFERENCES Proveedor (id_proveedor);
 
 -- Relación entre Compra y Cliente
-ALTER TABLE `Compra` ADD CONSTRAINT `FK_Compra_Cliente` FOREIGN KEY (`id_cliente`) REFERENCES `Cliente` (`id_cliente`);
+ALTER TABLE Compra ADD CONSTRAINT FK_Compra_Cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente);
 
 -- Relación entre Detalle_compra y Compra
-ALTER TABLE `Detalle_compra` ADD CONSTRAINT `FK_Detalle_compra_Compra` FOREIGN KEY (`id_compra`) REFERENCES `Compra` (`id_compra`);
+ALTER TABLE Detalle_compra ADD CONSTRAINT FK_Detalle_compra_Compra FOREIGN KEY (id_compra) REFERENCES Compra (id_compra);
 
 -- Relación entre Compra y Tipo_pago
-ALTER TABLE `Compra` ADD CONSTRAINT `FK_Compra_Tipo_pago` FOREIGN KEY (`id_tipo_pago`) REFERENCES `Tipo_pago` (`id_tipo_pago`);
+ALTER TABLE Compra ADD CONSTRAINT FK_Compra_Tipo_pago FOREIGN KEY (id_tipo_pago) REFERENCES Tipo_pago (id_tipo_pago);
 
 -- Relación entre Compra y Tipo_entrega
-ALTER TABLE `Compra` ADD CONSTRAINT `FK_Compra_Tipo_entrega` FOREIGN KEY (`id_entrega`) REFERENCES `Tipo_entrega` (`id_entrega`);
+ALTER TABLE Compra ADD CONSTRAINT FK_Compra_Tipo_entrega FOREIGN KEY (id_entrega) REFERENCES Tipo_entrega (id_entrega);
 
 -- Relación entre Detalle_compra y Producto
-ALTER TABLE `Detalle_compra` ADD CONSTRAINT `FK_Detalle_compra_Producto` FOREIGN KEY (`id_producto`) REFERENCES `Producto` (`id_producto`);
+ALTER TABLE Detalle_compra ADD CONSTRAINT FK_Detalle_compra_Producto FOREIGN KEY (id_producto) REFERENCES Producto (id_producto);
 
 -- Relación entre Producto y Categoria
-ALTER TABLE `Producto` ADD CONSTRAINT `FK_producto_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `Categoria` (`id_categoria`);
+ALTER TABLE Producto ADD CONSTRAINT FK_producto_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria (id_categoria);
 
 -- Relación entre Resena y Producto
-ALTER TABLE `Resena` ADD CONSTRAINT `FK_Resena_Producto` FOREIGN KEY (`id_producto`) REFERENCES `Producto` (`id_producto`);
+ALTER TABLE Resena ADD CONSTRAINT FK_Resena_Producto FOREIGN KEY (id_producto) REFERENCES Producto (id_producto);
 
 -- Relación entre Resena y Cliente
-ALTER TABLE `Resena` ADD CONSTRAINT `FK_Resena_Cliente` FOREIGN KEY (`id_cliente`) REFERENCES `Cliente` (`id_cliente`);
+ALTER TABLE Resena ADD CONSTRAINT FK_Resena_Cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente);
 
 -- Relación entre ListaDetalle y ListaDeseos
-ALTER TABLE `ListaDetalle` ADD CONSTRAINT `FK_ListaDetalle_ListaDeseos` FOREIGN KEY (`id_deseo`) REFERENCES `ListaDeseos` (`id_deseo`);
+ALTER TABLE ListaDetalle ADD CONSTRAINT FK_ListaDetalle_ListaDeseos FOREIGN KEY (id_deseo) REFERENCES ListaDeseos (id_deseo);
 
 -- Relación entre ListaDetalle y Producto
-ALTER TABLE `ListaDetalle` ADD CONSTRAINT `FK_ListaDetalle_Producto` FOREIGN KEY (`id_producto`) REFERENCES `Producto` (`id_producto`);
+ALTER TABLE ListaDetalle ADD CONSTRAINT FK_ListaDetalle_Producto FOREIGN KEY (id_producto) REFERENCES Producto (id_producto);
 
 -- Relación entre ListaDeseos y Cliente
-ALTER TABLE `ListaDeseos` ADD CONSTRAINT `FK_ListaDeseos_Cliente` FOREIGN KEY (`id_cliente`) REFERENCES `Cliente` (`id_cliente`);
+ALTER TABLE ListaDeseos ADD CONSTRAINT FK_ListaDeseos_Cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente);
  
 ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '@kekodroid';
 ALTER USER 'KennyTellez'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'incorrecto';

@@ -75,9 +75,18 @@ module.exports = (db) => {
     });
   });
 
-  /* Crud Cliente Inicio */
 
-  // Leer
+
+
+
+
+
+
+
+
+  /*----- Crud Cliente Inicio ---------------------------------------*/
+
+  // Mostrar clientes
   router.get("/read_cliente", (req, res) => {
     const sql = "SELECT * FROM Cliente";
 
@@ -92,13 +101,14 @@ module.exports = (db) => {
     });
   });
 
-  // Crear
+  // Registrar cliente
   router.post("/create_cliente", (req, res) => {
     const {
       nombre1_cliente,
       nombre2_cliente,
       apellido1_cliente,
       apellido2_cliente,
+      genero,
       fechanac_cliente,
       telefono_cliente,
       email_cliente,
@@ -110,6 +120,7 @@ module.exports = (db) => {
       !nombre2_cliente ||
       !apellido1_cliente ||
       !apellido2_cliente ||
+      !genero ||
       !fechanac_cliente ||
       !telefono_cliente ||
       !email_cliente ||
@@ -120,12 +131,13 @@ module.exports = (db) => {
         .json({ error: "Todos los campos son obligatorios" });
     }
 
-    const sql = `INSERT INTO Cliente (nombre1_cliente, nombre2_cliente, apellido1_cliente, apellido2_cliente, fechanac_cliente, telefono_cliente, email_cliente, contrasena_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO Cliente (nombre1_cliente, nombre2_cliente, apellido1_cliente, apellido2_cliente, genero, fechanac_cliente, telefono_cliente, email_cliente, contrasena_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const values = [
       nombre1_cliente,
       nombre2_cliente,
       apellido1_cliente,
       apellido2_cliente,
+      genero,
       fechanac_cliente,
       telefono_cliente,
       email_cliente,
@@ -152,6 +164,7 @@ module.exports = (db) => {
       nombre2_cliente,
       apellido1_cliente,
       apellido2_cliente,
+      genero,
       fechanac_cliente,
       telefono_cliente,
       email_cliente,
@@ -163,6 +176,7 @@ module.exports = (db) => {
       !nombre2_cliente ||
       !apellido1_cliente ||
       !apellido2_cliente ||
+      !genero ||
       !fechanac_cliente ||
       !telefono_cliente ||
       !email_cliente ||
@@ -175,7 +189,7 @@ module.exports = (db) => {
 
     const sql = `
       UPDATE Cliente
-      SET nombre1_cliente = ?, nombre2_cliente = ?, apellido1_cliente = ?, apellido2_cliente = ?, fechanac_cliente = ?, telefono_cliente = ?, email_cliente = ?, contrasena_cliente = ?
+      SET nombre1_cliente = ?, nombre2_cliente = ?, apellido1_cliente = ?, apellido2_cliente = ?, genero = ?, fechanac_cliente = ?, telefono_cliente = ?, email_cliente = ?, contrasena_cliente = ?
       WHERE id_cliente = ?
     `;
 
@@ -184,6 +198,7 @@ module.exports = (db) => {
       nombre2_cliente,
       apellido1_cliente,
       apellido2_cliente,
+      genero,
       fechanac_cliente,
       telefono_cliente,
       email_cliente,
@@ -219,11 +234,18 @@ module.exports = (db) => {
     });
   });
 
-  /* Crud Cliente Fin */
 
-  /* Crud Empleado Inicio */
 
-  // Leer
+
+
+
+
+
+
+
+  /*----- Crud Empleado Inicio ---------------------------------------*/
+
+  // Mostrar
   router.get("/read_empleado", (req, res) => {
     const sql = "SELECT * FROM Empleado";
 
@@ -245,6 +267,7 @@ module.exports = (db) => {
       nombre2_empleado,
       apellido1_empleado,
       apellido2_empleado,
+      genero,
       especialidad_empleado,
       telefono_empleado,
       email_empleado,
@@ -256,6 +279,7 @@ module.exports = (db) => {
       !nombre2_empleado ||
       !apellido1_empleado ||
       !apellido2_empleado ||
+      !genero ||
       !especialidad_empleado ||
       !telefono_empleado ||
       !email_empleado ||
@@ -266,12 +290,13 @@ module.exports = (db) => {
         .json({ error: "Todos los campos son obligatorios" });
     }
 
-    const sql = `INSERT INTO Empleado (nombre1_empleado, nombre2_empleado, apellido1_empleado, apellido2_empleado, especialidad_empleado, telefono_empleado, email_empleado, contrasena_empleado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO Empleado (nombre1_empleado, nombre2_empleado, apellido1_empleado, apellido2_empleado, genero, especialidad_empleado, telefono_empleado, email_empleado, contrasena_empleado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     const values = [
       nombre1_empleado,
       nombre2_empleado,
       apellido1_empleado,
       apellido2_empleado,
+      genero,
       especialidad_empleado,
       telefono_empleado,
       email_empleado,
@@ -298,6 +323,7 @@ module.exports = (db) => {
       nombre2_empleado,
       apellido1_empleado,
       apellido2_empleado,
+      genero,
       especialidad_empleado,
       telefono_empleado,
       email_empleado,
@@ -309,6 +335,7 @@ module.exports = (db) => {
       !nombre2_empleado ||
       !apellido1_empleado ||
       !apellido2_empleado ||
+      !genero ||
       !especialidad_empleado ||
       !telefono_empleado ||
       !email_empleado ||
@@ -321,7 +348,7 @@ module.exports = (db) => {
 
     const sql = `
         UPDATE Empleado
-        SET nombre1_empleado = ?, nombre2_empleado = ?, apellido1_empleado = ?, apellido2_empleado = ?, especialidad_empleado = ?, telefono_empleado = ?, email_empleado = ?, contrasena_empleado = ?
+        SET nombre1_empleado = ?, nombre2_empleado = ?, apellido1_empleado = ?, apellido2_empleado = ?, genero = ?, especialidad_empleado = ?, telefono_empleado = ?, email_empleado = ?, contrasena_empleado = ?
         WHERE id_empleado = ?
       `;
 
@@ -330,6 +357,7 @@ module.exports = (db) => {
       nombre2_empleado,
       apellido1_empleado,
       apellido2_empleado,
+      genero,
       especialidad_empleado,
       telefono_empleado,
       email_empleado,
@@ -365,9 +393,18 @@ module.exports = (db) => {
     });
   });
 
-  /* Crud Empleado Fin */
 
-  /* Crud Producto Inicio */
+
+
+
+
+
+
+
+
+
+
+  /*----- Crud Producto Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_producto", (req, res) => {
@@ -384,7 +421,7 @@ module.exports = (db) => {
           p.precio_compra,
           p.cantidad,
           p.talla,
-          p.genero
+          p.genero_producto
       FROM Producto p
       INNER JOIN Proveedor pr ON p.id_proveedor = pr.id_proveedor
       INNER JOIN Categoria c ON p.id_categoria = c.id_categoria;
@@ -412,7 +449,7 @@ module.exports = (db) => {
       precio_compra,
       cantidad,
       talla,
-      genero,
+      genero_producto,
     } = req.body;
 
     if (
@@ -422,7 +459,7 @@ module.exports = (db) => {
       !precio_compra ||
       !cantidad ||
       !talla ||
-      !genero
+      !genero_producto
     ) {
       return res
         .status(400)
@@ -431,7 +468,7 @@ module.exports = (db) => {
 
     // Insertar el producto en la base de datos, incluyendo la URL de la imagen
     const productQuery =
-      "INSERT INTO Producto (id_proveedor, id_categoria, nombre_producto, imagen, precio_venta, precio_compra, cantidad, talla, genero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO Producto (id_proveedor, id_categoria, nombre_producto, imagen, precio_venta, precio_compra, cantidad, talla, genero_producto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const productValues = [
       id_proveedor,
       id_categoria,
@@ -441,7 +478,7 @@ module.exports = (db) => {
       precio_compra,
       cantidad,
       talla,
-      genero,
+      genero_producto,
     ];
 
     db.query(productQuery, productValues, (productErr, productResult) => {
@@ -467,7 +504,7 @@ module.exports = (db) => {
       precio_compra,
       cantidad,
       talla,
-      genero,
+      genero_producto,
     } = req.body;
 
     if (
@@ -479,7 +516,7 @@ module.exports = (db) => {
       !precio_compra ||
       !cantidad ||
       !talla ||
-      !genero
+      !genero_producto
     ) {
       return res
         .status(400)
@@ -488,7 +525,7 @@ module.exports = (db) => {
 
     const sql = `
         UPDATE Producto
-        SET id_proveedor = ?, id_categoria = ?, nombre_producto = ?, imagen = ?, precio_venta = ?, precio_compra = ?, cantidad = ?, talla = ?, genero = ?
+        SET id_proveedor = ?, id_categoria = ?, nombre_producto = ?, imagen = ?, precio_venta = ?, precio_compra = ?, cantidad = ?, talla = ?, genero_producto = ?
         WHERE id_producto = ?
       `;
 
@@ -501,7 +538,7 @@ module.exports = (db) => {
       precio_compra,
       cantidad,
       talla,
-      genero,
+      genero_producto,
       id_producto,
     ];
 
@@ -533,9 +570,16 @@ module.exports = (db) => {
     });
   });
 
-  /* Crud Producto Fin */
 
-  /* Crud Categoria Inicio */
+
+
+
+
+
+
+
+
+  /*----- Crud Categoria Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_categoria", (req, res) => {
@@ -635,9 +679,16 @@ module.exports = (db) => {
     });
   });
 
-  /* Crud Categoria Fin */
 
-  /* Crud Cita Inicio */
+
+
+
+
+
+
+
+
+  /*----- Crud Cita Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_cita", (req, res) => {
@@ -792,9 +843,15 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud Cita Fin */
 
-  /* Crud Compra Inicio */
+
+
+
+
+
+  
+
+    /*----- Crud Compra Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_compra", (req, res) => {
@@ -1006,9 +1063,15 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud Compra Fin */
 
-  /* Crud Tipo Pago Inicio */
+
+
+
+
+
+
+
+  /*----- Crud Tipo pago Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_tipo_pago", (req, res) => {
@@ -1097,9 +1160,15 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud Tipo pago Fin */
 
-  /* Crud Tipo entrega Inicio */
+
+
+
+
+
+
+
+    /*----- Crud Tipo entrega Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_entrega", (req, res) => {
@@ -1211,9 +1280,15 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud Tipo entrega Fin */
 
-  /* Crud Detalle compra Inicio */
+
+
+
+
+
+
+
+  /*----- Crud Detalle compra Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_detalle_compra", (req, res) => {
@@ -1232,16 +1307,16 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
   // Crear
   router.post("/create_detalle_compra", (req, res) => {
-    const { id_compra, id_producto, cantidad_compra } = req.body;
+    const { id_compra, id_producto, precio_unitario,cantidad_compra } = req.body;
 
-    if (!id_compra || !id_producto || !cantidad_compra) {
+    if (!id_compra || !id_producto || !precio_unitario|| !cantidad_compra) {
       return res
         .status(400)
         .json({ error: "Todos los campos son obligatorios" });
     }
 
-    const sql = `INSERT INTO Detalle_compra (id_compra, id_producto, cantidad_compra) VALUES (?,?,?)`;
-    const values = [id_compra, id_producto, cantidad_compra];
+    const sql = `INSERT INTO Detalle_compra (id_compra, id_producto, precio_unitario,cantidad_compra) VALUES (?,?,?,?)`;
+    const values = [id_compra, id_producto, precio_unitario,cantidad_compra];
 
     // Ejecuta la consulta
     db.query(sql, values, (err, result) => {
@@ -1258,9 +1333,9 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
   router.put("/update_detalle_compra/:id_detalle_compra", (req, res) => {
     const id_detalle_compra = req.params.id_detalle_compra;
 
-    const { id_compra, id_producto, cantidad_compra } = req.body;
+    const { id_compra, id_producto, precio_unitario,cantidad_compra } = req.body;
 
-    if (!id_compra || !id_producto || !cantidad_compra) {
+    if (!id_compra || !id_producto || !precio_unitario || !cantidad_compra) {
       return res
         .status(400)
         .json({ error: "Todos los campos son obligatorios" });
@@ -1268,11 +1343,11 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
     const sql = `
         UPDATE Detalle_compra
-        SET id_compra = ?, id_producto = ?, cantidad_compra = ?
+        SET id_compra = ?, id_producto = ?, precio_unitario = ?, cantidad_compra = ?
         WHERE id_detalle_c = ?
       `;
 
-    const values = [id_compra, id_producto, cantidad_compra, id_detalle_compra];
+    const values = [id_compra, id_producto, precio_unitario, cantidad_compra, id_detalle_compra];
 
     // Ejecuta la consulta
     db.query(sql, values, (err, result) => {
@@ -1302,9 +1377,15 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud Detalle_compra Fin */
 
-  /* Crud Reseñas Inicio */
+
+
+
+
+
+
+
+    /*----- Crud Reseña Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_resena", (req, res) => {
@@ -1450,9 +1531,15 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud Reseña Fin */
 
-  /* Crud ListaDeseo Inicio */
+
+
+
+
+
+
+
+    /*----- Crud Lista deseo Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_lista_deseo", (req, res) => {
@@ -1541,9 +1628,15 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud ListaDeseos Fin */
 
-  /* Crud ListaDetalle Inicio */
+
+
+
+
+
+
+
+    /*----- Crud Lista detalle Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_lista_detalle", (req, res) => {
@@ -1632,9 +1725,15 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud ListaDetalle Fin */
 
-  /* Crud Proveedor Inicio */
+
+
+
+
+
+
+
+    /*----- Crud Proveedor Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_proveedor", (req, res) => {
@@ -1730,7 +1829,6 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     });
   });
 
-  /* Crud Proveedor Fin */
 
   return router;
 };
