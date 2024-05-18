@@ -25,7 +25,7 @@ function Catalogo({ rol }) {
     const nombre_producto = producto.nombre_producto.toLowerCase();
     const cantidad = producto.cantidad;
     const precio_venta = producto.precio_venta;
-    const genero = producto.genero.toLowerCase();
+    const genero_producto = producto.genero_producto.toLowerCase();
     const talla = producto.talla;
     const id_categoria = producto.id_categoria;
     const search = searchQuery.toLowerCase();
@@ -35,7 +35,7 @@ function Catalogo({ rol }) {
       nombre_producto.includes(search) ||
       cantidad == search ||
       precio_venta == search ||
-      genero.includes(search) ||
+      genero_producto.includes(search) ||
       talla == search ||
       id_categoria == search
     );
@@ -87,7 +87,7 @@ function Catalogo({ rol }) {
 
                   <div>
                     <Badge bg="primary">Stock: {producto.cantidad}</Badge>
-                    <Badge bg="success">Género: {producto.genero}</Badge>
+                    <Badge bg="success">Género: {producto.genero_producto}</Badge>
                     <Badge bg="warning" text="dark">
                       Talla: {producto.talla}
                     </Badge>

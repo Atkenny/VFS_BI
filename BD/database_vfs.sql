@@ -8,7 +8,7 @@ CREATE ROLE 'desarrollador';
 -- Asignar permisos
 GRANT ALL ON database_vfs.* TO 'desarrollador';
 
--- Rol Gisela Paola
+-- Rol Gisela Paola 
 CREATE USER 'GiselaPaola'@'localhost' IDENTIFIED BY 'correcto';
 -- DROP USER 'GiselaPaola'@'localhost';
 
@@ -64,7 +64,7 @@ CREATE TABLE Cliente (
   telefono_cliente varchar(9) NOT NULL,
   email_cliente varchar(255) NOT NULL,
   contrasena_cliente varchar(50) NOT NULL,
-  rol Varchar(20) NOT NULL
+  rol Varchar(20) NULL
 );
 
 CREATE TABLE Empleado (
@@ -78,7 +78,7 @@ CREATE TABLE Empleado (
   telefono_empleado varchar(9) NOT NULL,
   email_empleado varchar(50) NOT NULL,
   contrasena_empleado varchar(16) NULL,
-  rol Varchar(20) NOT NULL
+  rol Varchar(20) NULL
 );
 
 CREATE TABLE Producto (
@@ -111,34 +111,34 @@ CREATE TABLE Producto (
 	  comentario varchar(255) NULL
 	);
 
-CREATE TABLE Compra (
-  id_compra integer AUTO_INCREMENT PRIMARY KEY,
-  id_cliente integer NOT NULL,
-  id_tipo_pago integer NOT NULL,
-  id_entrega integer NOT NULL,
-  fecha_compra date NOT NULL,
-  hora_compra time NOT NULL
+CREATE TABLE Venta (
+  id_venta integer AUTO_INCREMENT PRIMARY KEY,
+  id_cliente integer NULL,
+  id_tipo_pago integer NULL,
+  id_entrega integer NULL,
+  fecha_compra date NULL,
+  hora_compra time NULL
 );
 
 CREATE TABLE Tipo_pago (
   id_tipo_pago integer AUTO_INCREMENT PRIMARY KEY,
-  tipo_pago varchar(65) NOT NULL
+  tipo_pago varchar(65) NULL
 );
 
 CREATE TABLE Tipo_entrega (
   id_entrega integer AUTO_INCREMENT PRIMARY KEY,
-  id_empleado integer NOT NULL,
-  tipo_entrega varchar(50) NOT NULL,
-  estado_entrega varchar(20) NOT NULL,
-  direccion_entrega varchar(255) NOT NULL
+  id_empleado integer NULL,
+  tipo_entrega varchar(50) NULL,
+  estado_entrega varchar(20) NULL,
+  direccion_entrega varchar(255) NULL
 );
 
-CREATE TABLE Detalle_compra (
-  id_detalle_c integer AUTO_INCREMENT PRIMARY KEY,
-  id_compra integer NOT NULL,
-  id_producto integer NOT NULL,
-  precio_unitario integer NOT NULL, 
-  cantidad_compra integer NOT NULL
+CREATE TABLE Detalle_venta(
+  id_detalle_venta integer AUTO_INCREMENT PRIMARY KEY,
+  id_venta integer NULL,
+  id_producto integer NULL,
+  precio_unitario integer NULL, 
+  cantidad_compra integer NULL
 );
 
 CREATE TABLE Resena (
@@ -184,19 +184,19 @@ ALTER TABLE Tipo_entrega ADD CONSTRAINT FK_Tipo_entrega_Empleado FOREIGN KEY (id
 ALTER TABLE Producto ADD CONSTRAINT FK_Producto_Proveedor FOREIGN KEY (id_proveedor) REFERENCES Proveedor (id_proveedor);
 
 -- Relación entre Compra y Cliente
-ALTER TABLE Compra ADD CONSTRAINT FK_Compra_Cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente);
+ALTER TABLE Venta ADD CONSTRAINT FK_Compra_Cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente);
 
 -- Relación entre Detalle_compra y Compra
-ALTER TABLE Detalle_compra ADD CONSTRAINT FK_Detalle_compra_Compra FOREIGN KEY (id_compra) REFERENCES Compra (id_compra);
+ALTER TABLE Detalle_venta ADD CONSTRAINT FK_Detalle_venta FOREIGN KEY (id_venta) REFERENCES Venta (id_venta);
 
 -- Relación entre Compra y Tipo_pago
-ALTER TABLE Compra ADD CONSTRAINT FK_Compra_Tipo_pago FOREIGN KEY (id_tipo_pago) REFERENCES Tipo_pago (id_tipo_pago);
+ALTER TABLE Venta ADD CONSTRAINT FK_Venta_Tipo_pago FOREIGN KEY (id_tipo_pago) REFERENCES Tipo_pago (id_tipo_pago);
 
 -- Relación entre Compra y Tipo_entrega
-ALTER TABLE Compra ADD CONSTRAINT FK_Compra_Tipo_entrega FOREIGN KEY (id_entrega) REFERENCES Tipo_entrega (id_entrega);
+ALTER TABLE Venta ADD CONSTRAINT FK_Compra_Tipo_entrega FOREIGN KEY (id_entrega) REFERENCES Tipo_entrega (id_entrega);
 
 -- Relación entre Detalle_compra y Producto
-ALTER TABLE Detalle_compra ADD CONSTRAINT FK_Detalle_compra_Producto FOREIGN KEY (id_producto) REFERENCES Producto (id_producto);
+ALTER TABLE Detalle_venta ADD CONSTRAINT FK_Detalle_venta_Producto FOREIGN KEY (id_producto) REFERENCES Producto (id_producto);
 
 -- Relación entre Producto y Categoria
 ALTER TABLE Producto ADD CONSTRAINT FK_producto_categoria FOREIGN KEY (id_categoria) REFERENCES Categoria (id_categoria);

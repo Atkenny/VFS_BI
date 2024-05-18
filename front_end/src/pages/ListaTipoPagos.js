@@ -106,14 +106,13 @@ function ListaTipoPago({ rol }) {
 
   const filteredTipo_pago = tipo_pagos.filter((tipo_pago) => {
     // Convierte los valores de los campos a minúsculas para realizar una búsqueda insensible a mayúsculas y minúsculas
-    const tipo = tipo_pago.tipo.toLowerCase();
-    const search = searchQuery.toLowerCase();
-
+    const tipo = tipo_pago.tipo ? tipo_pago.tipo.toLowerCase() : '';
+    const search = searchQuery ? searchQuery.toLowerCase() : '';
+  
     // Verifica si la cadena de búsqueda se encuentra en algún campo
-    return (
-      tipo.includes(search)
-    );
+    return tipo.includes(search);
   });
+  
 
   return (
     <div>
@@ -149,7 +148,7 @@ function ListaTipoPago({ rol }) {
               {filteredTipo_pago.map((tipo_pago) => (
                 <tr key={tipo_pago.id_tipo_pago}>
                   <td>{tipo_pago.id_tipo_pago}</td>
-                  <td>{tipo_pago.tipo}</td>
+                  <td>{tipo_pago.tipo_pago}</td>
                   <td>
                     <Button variant="primary" onClick={() => openModal(tipo_pago)}><FaPencil /></Button>
                   </td>

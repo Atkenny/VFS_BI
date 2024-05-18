@@ -17,6 +17,7 @@ function ListaCliente({ rol }) {
     telefono_cliente: '',
     email_cliente: '',
     contrasena_cliente: '',
+    rol: '',
   });
 
   const handleSearchChange = (e) => {
@@ -39,6 +40,7 @@ function ListaCliente({ rol }) {
       telefono_cliente: clientes.telefono_cliente,
       email_cliente: clientes.email_cliente,
       contrasena_cliente: clientes.contrasena_cliente,
+      rol: clientes.rol,
     });
     setShowModal(true);
   };
@@ -156,16 +158,17 @@ function ListaCliente({ rol }) {
 
   const filteredCliente = clientes.filter((cliente) => {
     // Convierte los valores de los campos a minúsculas para realizar una búsqueda insensible a mayúsculas y minúsculas
-    const nombre1_cliente = cliente.nombre1_cliente.toLowerCase();
-    const nombre2_cliente = cliente.nombre2_cliente.toLowerCase();
-    const apellido1_cliente = cliente.apellido1_cliente.toLowerCase();
-    const apellido2_cliente = cliente.apellido2_cliente.toLowerCase();
-    const fechanac_cliente = cliente.fechanac_cliente.toLowerCase();
-    const telefono_cliente = cliente.telefono_cliente.toLowerCase();
-    const email_cliente = cliente.email_cliente.toLowerCase();
-    const contrasena_cliente = cliente.contrasena_cliente.toLowerCase();
-    const search = searchQuery.toLowerCase();
-
+    const nombre1_cliente = cliente.nombre1_cliente ? cliente.nombre1_cliente.toLowerCase() : '';
+    const nombre2_cliente = cliente.nombre2_cliente ? cliente.nombre2_cliente.toLowerCase() : '';
+    const apellido1_cliente = cliente.apellido1_cliente ? cliente.apellido1_cliente.toLowerCase() : '';
+    const apellido2_cliente = cliente.apellido2_cliente ? cliente.apellido2_cliente.toLowerCase() : '';
+    const fechanac_cliente = cliente.fechanac_cliente ? String(cliente.fechanac_cliente).toLowerCase() : '';
+    const telefono_cliente = cliente.telefono_cliente ? cliente.telefono_cliente.toLowerCase() : '';
+    const email_cliente = cliente.email_cliente ? cliente.email_cliente.toLowerCase() : '';
+    const contrasena_cliente = cliente.contrasena_cliente ? cliente.contrasena_cliente.toLowerCase() : '';
+    const rol = cliente.rol ? cliente.rol.toLowerCase() : '';
+    const search = searchQuery ? searchQuery.toLowerCase() : '';
+  
     // Verifica si la cadena de búsqueda se encuentra en algún campo
     return (
       nombre1_cliente.includes(search) ||
@@ -175,9 +178,11 @@ function ListaCliente({ rol }) {
       fechanac_cliente.includes(search) ||
       telefono_cliente.includes(search) ||
       email_cliente.includes(search) ||
-      contrasena_cliente.includes(search)
+      contrasena_cliente.includes(search) ||
+      rol.includes(search)
     );
   });
+  
 
   return (
     <div>
@@ -212,6 +217,7 @@ function ListaCliente({ rol }) {
                 <th>Teléfono</th>
                 <th>Email</th>
                 <th>Contraseña</th>
+                <th>Rol</th>
                 <th>Editar</th>
                 <th>Eliminar</th>
 
@@ -229,6 +235,7 @@ function ListaCliente({ rol }) {
                   <td>{cliente.telefono_cliente}</td>
                   <td>{cliente.email_cliente}</td>
                   <td>{cliente.contrasena_cliente}</td>
+                  <td>{cliente.rol}</td>
                   <td>
                     <Button variant="primary" onClick={() => openModal(cliente)}><FaPencil /></Button>
                   </td>

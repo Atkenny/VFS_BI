@@ -90,31 +90,29 @@ function ListaProducto({ rol }) {
 
   const filteredProductos = productos.filter((producto) => {
     // Convierte los valores de los campos a minúsculas para realizar una búsqueda insensible a mayúsculas y minúsculas
-
-    const id_proveedor = producto.id_proveedor;
-    const id_categoria = producto.id_categoria;
-    const nombre_producto = producto.nombre_producto.toLowerCase();
-    const precio_venta = producto.precio_venta;
-    const precio_compra = producto.precio_compra;
-    const cantidad = producto.cantidad;
-    const talla = producto.talla.toLowerCase();
-    const genero_producto = producto.genero_producto.toLowerCase();
-    const search = searchQuery.toLowerCase();
-
-
+    const id_proveedor = producto.id_proveedor ? String(producto.id_proveedor) : '';
+    const id_categoria = producto.id_categoria ? String(producto.id_categoria) : '';
+    const nombre_producto = producto.nombre_producto ? producto.nombre_producto.toLowerCase() : '';
+    const precio_venta = producto.precio_venta ? String(producto.precio_venta) : '';
+    const precio_compra = producto.precio_compra ? String(producto.precio_compra) : '';
+    const cantidad = producto.cantidad ? String(producto.cantidad) : '';
+    const talla = producto.talla ? producto.talla.toLowerCase() : '';
+    const genero_producto = producto.genero_producto ? producto.genero_producto.toLowerCase() : '';
+    const search = searchQuery ? searchQuery.toLowerCase() : '';
+  
     // Verifica si la cadena de búsqueda se encuentra en algún campo
     return (
-
-      id_proveedor == (search) ||
-      id_categoria == (search) ||
+      id_proveedor.includes(search) ||
+      id_categoria.includes(search) ||
       nombre_producto.includes(search) ||
-      precio_venta == (search) ||
-      precio_compra == (search) ||
-      cantidad == (search) ||
+      precio_venta.includes(search) ||
+      precio_compra.includes(search) ||
+      cantidad.includes(search) ||
       talla.includes(search) ||
       genero_producto.includes(search)
     );
   });
+  
 
   // Función para abrir el modal y pasar los datos del producto seleccionado
   const openModal = (producto) => {

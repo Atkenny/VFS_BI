@@ -519,18 +519,18 @@
     <connection>conexion</connection>
     <sql>SELECT
     dc.id_detalle_c AS id_hventa,
-    C.id_compra,
-    C.id_cliente,
-    dc.id_producto,
+ 	C.id_cliente,
+   	dc.id_producto,
     CONCAT(YEAR(fecha_compra), 
     LPAD(MONTH(fecha_compra), 2, '0'), 
     LPAD(DAY(fecha_compra), 2, '0'))
     AS id_tiempo,
+ 	dc.cantidad_compra,
     tp.tipo_pago,
     te.tipo_entrega,
     te.estado_entrega,
-    dc.cantidad_compra,
-    dc.precio_unitario
+    dc.precio_unitario,
+	(dc.cantidad_compra * dc.precio_unitario) AS total_venta
 FROM 
     Compra C
 INNER JOIN Detalle_compra dc ON C.id_compra = dc.id_compra
@@ -552,29 +552,6 @@ INNER JOIN Tipo_entrega te ON C.id_entrega = te.id_entrega;
         <precision>0</precision>
         <origin>Carga_hechos_ventas</origin>
         <comments>id_hventa</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>es_NI</date_format_locale>
-        <date_format_timezone>America/Managua</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>id_compra</name>
-        <length>9</length>
-        <precision>0</precision>
-        <origin>Carga_hechos_ventas</origin>
-        <comments>id_compra</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -645,6 +622,29 @@ INNER JOIN Tipo_entrega te ON C.id_entrega = te.id_entrega;
         <origin>Carga_hechos_ventas</origin>
         <comments>id_tiempo</comments>
         <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_NI</date_format_locale>
+        <date_format_timezone>America/Managua</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>cantidad_compra</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>Carga_hechos_ventas</origin>
+        <comments>cantidad_compra</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
         <currency_symbol/>
@@ -731,11 +731,11 @@ INNER JOIN Tipo_entrega te ON C.id_entrega = te.id_entrega;
       <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
-        <name>cantidad_compra</name>
+        <name>precio_unitario</name>
         <length>9</length>
         <precision>0</precision>
         <origin>Carga_hechos_ventas</origin>
-        <comments>cantidad_compra</comments>
+        <comments>precio_unitario</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>
@@ -754,11 +754,11 @@ INNER JOIN Tipo_entrega te ON C.id_entrega = te.id_entrega;
       <value-meta>
         <type>Integer</type>
         <storagetype>normal</storagetype>
-        <name>precio_unitario</name>
-        <length>9</length>
+        <name>total_venta</name>
+        <length>15</length>
         <precision>0</precision>
         <origin>Carga_hechos_ventas</origin>
-        <comments>precio_unitario</comments>
+        <comments>total_venta</comments>
         <conversion_Mask>####0;-####0</conversion_Mask>
         <decimal_symbol>.</decimal_symbol>
         <grouping_symbol>,</grouping_symbol>

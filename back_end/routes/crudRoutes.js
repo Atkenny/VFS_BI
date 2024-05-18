@@ -16,6 +16,9 @@ const upload = multer({ storage: storage });
 module.exports = (db) => {
 
 
+/* ----------------------Estadisticas ------------------------------- */
+
+
   // Generar estadistica de pastel
   router.get("/ProductosPorCategoria", (req, res) => {
     const sql = `  
@@ -44,6 +47,10 @@ module.exports = (db) => {
       }
     });
   });
+
+
+  /* -------------- Login --------------------------*/
+
 
   // Ruta para verificar las credenciales y obtener el rol del usuario
   router.post("/login", (req, res) => {
@@ -844,7 +851,32 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
   });
 
 
+/* Nuevo metodo de compra */
+router.post('/createventa', (req, res) => {
 
+  const {id_cliente, id_tipo_pago, id_entrega, fecha_compra, hora_compra, detalle} = req.body;
+
+  const sqlVenta = 'INSERT INTO Venta (id_cliente, id_tipo_pago, id_entrega, fecha_compra, hora_compra) VALUES (?,?,?,?,?)';
+  db.query(sqlVenta, [id_cliente, id_tipo_pago, id_entrega, fecha_compra, hora_compra], (err, result) => {
+    if(err){
+      console.error('Error al insertar venta:', err);
+      return res.status(500).json({ error: 'Error al insertar venta' });
+    }
+
+    const id_venta = result.insertId;
+
+    const sqlDetalle = 'INSERT INTO (id_venta, id_producto, precio_unitario, cantidad_compra) VALUES ?,?';
+    const values = detalle.map((item) => [id_venta, item.id_producto, item.precio_unitario, item.cantidad_compra]);
+    db.query(sqlDetalle, [values], (err, result) => {
+      if(err){
+        console.error('Error al insertar detalle de venta:', err);
+        return res.status(500).json({ error: 'Error al insertar detalle de venta' });
+      }
+
+      res.status(201).json({ message: 'Venta y detalle de venta agregados con éxito' });
+    })
+  })
+})
 
 
 
@@ -854,8 +886,8 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
     /*----- Crud Compra Inicio ---------------------------------------*/
 
   // Leer
-  router.get("/read_compra", (req, res) => {
-    const sql = "SELECT * FROM Compra";
+  router.get("/read_venta", (req, res) => {
+    const sql = "SELECT * FROM Venta";
 
     // Ejecutar la consulta
     db.query(sql, (err, result) => {
@@ -865,139 +897,6 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
       } else {
         res.status(200).json(result);
       }
-    });
-  });
-
-  // Ruta para registrar una venta con su detalle y tipo de entrega
-  router.post("/create_venta_y_tipo_entrega", (req, res) => {
-    // Extraer datos de la solicitud
-    const {
-      fecha_compra,
-      hora_compra,
-      id_cliente,
-      id_empleado,
-      detalles_compra,
-      tipo_entrega,
-      estado_entrega,
-      direccion_entrega,
-    } = req.body;
-
-    // Comprobar si se proporcionaron todos los datos necesarios
-    if (
-      !fecha_compra ||
-      !hora_compra ||
-      !id_cliente ||
-      !id_empleado ||
-      detalles_compra.length === 0 ||
-      !tipo_entrega ||
-      !estado_entrega ||
-      !direccion_entrega
-    ) {
-      return res
-        .status(400)
-        .json({ error: "Todos los campos son obligatorios" });
-    }
-
-    // Iniciar la transacción
-    db.beginTransaction((err) => {
-      if (err) {
-        console.error("Error al iniciar la transacción:", err);
-        return res
-          .status(500)
-          .json({ error: "Error al iniciar la transacción" });
-      }
-
-      // Realizar la inserción del tipo de entrega
-      const sqlTipoEntrega =
-        "INSERT INTO Tipo_entrega (id_empleado, tipo_entrega, estado_entrega, direccion_entrega) VALUES (?, ?, ?, ?)";
-      const valuesTipoEntrega = [
-        id_empleado,
-        tipo_entrega,
-        estado_entrega,
-        direccion_entrega,
-      ];
-
-      db.query(sqlTipoEntrega, valuesTipoEntrega, (err, resultTipoEntrega) => {
-        if (err) {
-          db.rollback(() => {
-            console.error("Error al insertar tipo de entrega:", err);
-            res
-              .status(500)
-              .json({ error: "Error al insertar tipo de entrega" });
-          });
-        } else {
-          const idTipoEntrega = resultTipoEntrega.insertId;
-
-          // Realizar la inserción de la compra
-          const sqlCompra =
-            "INSERT INTO Compra (fecha_compra, hora_compra, id_cliente, id_tipo_entrega) VALUES (?, ?, ?, ?)";
-          const valuesCompra = [
-            fecha_compra,
-            hora_compra,
-            id_cliente,
-            idTipoEntrega,
-          ];
-
-          db.query(sqlCompra, valuesCompra, (err, resultCompra) => {
-            if (err) {
-              db.rollback(() => {
-                console.error("Error al insertar compra:", err);
-                res.status(500).json({ error: "Error al insertar compra" });
-              });
-            } else {
-              const idCompra = resultCompra.insertId;
-
-              // Realizar la inserción del detalle de compra
-              const sqlDetalleCompra =
-                "INSERT INTO Detalle_compra (id_compra, id_producto, cantidad_compra) VALUES ?";
-              const valuesDetalleCompra = detalles_compra.map((detalle) => [
-                idCompra,
-                detalle.id_producto,
-                detalle.cantidad_compra,
-              ]);
-
-              db.query(
-                sqlDetalleCompra,
-                [valuesDetalleCompra],
-                (err, resultDetalleCompra) => {
-                  if (err) {
-                    db.rollback(() => {
-                      console.error(
-                        "Error al insertar detalle de compra:",
-                        err
-                      );
-                      res
-                        .status(500)
-                        .json({ error: "Error al insertar detalle de compra" });
-                    });
-                  } else {
-                    // Confirmar la transacción
-                    db.commit((err) => {
-                      if (err) {
-                        db.rollback(() => {
-                          console.error(
-                            "Error al confirmar la transacción:",
-                            err
-                          );
-                          res.status(500).json({
-                            error: "Error al confirmar la transacción",
-                          });
-                        });
-                      } else {
-                        console.log("Transacción completada con éxito");
-                        res.status(201).json({
-                          message:
-                            "Tipo de entrega, compra y detalle de compra registrados con éxito",
-                        });
-                      }
-                    });
-                  }
-                }
-              );
-            }
-          });
-        }
-      });
     });
   });
 
@@ -1291,8 +1190,8 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
   /*----- Crud Detalle compra Inicio ---------------------------------------*/
 
   // Leer
-  router.get("/read_detalle_compra", (req, res) => {
-    const sql = "SELECT * FROM Detalle_compra";
+  router.get("/read_detalle_venta", (req, res) => {
+    const sql = "SELECT * FROM Detalle_venta";
 
     // Ejecutar la consulta
     db.query(sql, (err, result) => {

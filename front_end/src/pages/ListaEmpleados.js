@@ -152,16 +152,16 @@ function ListaEmpleado({ rol }) {
 
   const filteredEmpleado = empleados.filter((empleado) => {
     // Convierte los valores de los campos a minúsculas para realizar una búsqueda insensible a mayúsculas y minúsculas
-    const nombre1_empleado = empleado.nombre1_empleado.toLowerCase();
-    const nombre2_empleado = empleado.nombre2_empleado.toLowerCase();
-    const apellido1_empleado = empleado.apellido1_empleado.toLowerCase();
-    const apellido2_empleado = empleado.apellido2_empleado.toLowerCase();
-    const especialidad_empleado = empleado.especialidad_empleado.toLowerCase();
-    const telefono_empleado = empleado.telefono_empleado.toLowerCase();
-    const email_empleado = empleado.email_empleado.toLowerCase();
-    const contrasena_empleado = empleado.contrasena_empleado.toLowerCase();
-    const search = searchQuery.toLowerCase();
-
+    const nombre1_empleado = empleado.nombre1_empleado ? empleado.nombre1_empleado.toLowerCase() : '';
+    const nombre2_empleado = empleado.nombre2_empleado ? empleado.nombre2_empleado.toLowerCase() : '';
+    const apellido1_empleado = empleado.apellido1_empleado ? empleado.apellido1_empleado.toLowerCase() : '';
+    const apellido2_empleado = empleado.apellido2_empleado ? empleado.apellido2_empleado.toLowerCase() : '';
+    const especialidad_empleado = empleado.especialidad_empleado ? empleado.especialidad_empleado.toLowerCase() : '';
+    const telefono_empleado = empleado.telefono_empleado ? empleado.telefono_empleado.toLowerCase() : '';
+    const email_empleado = empleado.email_empleado ? empleado.email_empleado.toLowerCase() : '';
+    const contrasena_empleado = empleado.contrasena_empleado ? empleado.contrasena_empleado.toLowerCase() : '';
+    const search = searchQuery ? searchQuery.toLowerCase() : '';
+  
     // Verifica si la cadena de búsqueda se encuentra en algún campo
     return (
       nombre1_empleado.includes(search) ||
@@ -174,6 +174,7 @@ function ListaEmpleado({ rol }) {
       contrasena_empleado.includes(search)
     );
   });
+  
 
   return (
     <div>
