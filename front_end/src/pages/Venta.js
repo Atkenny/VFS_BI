@@ -262,7 +262,7 @@ function Venta({ rol }) {
             <Container className="margen-contenedor">
                 <Card className="global-margin-top">
                     <Card.Body>
-                        <Card.Title className="mt-3 title">Registro de venta</Card.Title>
+                        <Card.Title className="mt-3 titleventa">Registro de venta</Card.Title>
                         <Form className="mt-3">
                             <Row className="g-3">
 
@@ -364,7 +364,7 @@ function Venta({ rol }) {
                                 </Col>
 
                                 <Col sm="12" md="2" lg="2" className="d-flex align-items-center">
-                                    <button onClick={AgregarDetalleProducto} variant="outline-success" size="lg">
+                                    <button id="faplus"  onClick={AgregarDetalleProducto} variant="outline-success" size="lg">
                                         <FaPlus />
                                     </button>
                                 </Col>
@@ -374,7 +374,7 @@ function Venta({ rol }) {
                                         <Card.Title className="mt-3 title">Detalle de productos</Card.Title>
                                         <Table striped bordered hover responsive>
                                             <thead>
-                                                <tr>
+                                                <tr id='centertable'>
                                                     <th>ID</th>
                                                     <th>Nombre</th>
                                                     <th>Precio</th>
@@ -409,7 +409,7 @@ function Venta({ rol }) {
 
                             </Row>
                             <div className="center-button">
-                                <button variant="primary" onClick={registrarVenta} className="mt-3" size="lg">
+                                <button id="registrarventa" variant="primary" onClick={registrarVenta} className="mt-3" size="lg">
                                     Registrar
                                 </button>
                             </div>
@@ -462,7 +462,7 @@ function Venta({ rol }) {
                 </Modal.Header>
                 <Modal.Body>
                     {tipo_pago.map((tipo_pago) => (
-                        <div className="Seleccion" key={tipo_pago.id_tipo_pago} onClick={() => selectTipoPago(tipo_pago)}>
+                        <div className="Seleccion tipopago" key={tipo_pago.id_tipo_pago} onClick={() => selectTipoPago(tipo_pago)}>
                             {tipo_pago.tipo_pago}
                         </div>
                     ))}
@@ -475,7 +475,7 @@ function Venta({ rol }) {
                 </Modal.Header>
                 <Modal.Body>
                     {entrega.map((entrega) => (
-                        <div className="Seleccion" key={entrega.id_entrega} onClick={() => selectEntrega(entrega)}>
+                        <div className="Seleccion tipopago" key={entrega.id_entrega} onClick={() => selectEntrega(entrega)}>
                             {entrega.tipo_entrega}
                         </div>
                     ))}

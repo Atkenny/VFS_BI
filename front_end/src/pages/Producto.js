@@ -122,7 +122,7 @@ function Producto({ rol }) {
                         <Form className="mt-3" onSubmit={handleSubmit}>
                             <Row className="g-3">
 
-                                <Col sm="12" md="6" lg="4">
+                                <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="id_proveedor" label="Proveedor">
                                         <Form.Select
                                             aria-label="id_proveedor"
@@ -139,7 +139,7 @@ function Producto({ rol }) {
                                     </FloatingLabel>
                                 </Col>
 
-                                <Col sm="12" md="6" lg="4">
+                                <Col sm="12" md="6" lg="6">
                                     <FloatingLabel controlId="id_categoria" label="Categoría">
                                         <Form.Select
                                             aria-label="id_categoria"
@@ -222,7 +222,7 @@ function Producto({ rol }) {
                                     </FloatingLabel>
                                 </Col>
 
-                                <Col sm="12" md="6" lg="4">
+                                <Col sm="6" md="6" lg="6">
                                     <FloatingLabel controlId="genero" label="Género">
                                         <Form.Select
                                             aria-label="Genero"

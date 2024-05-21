@@ -20,11 +20,63 @@
 
 /* Estilo para los boton de búsqueda */
 .search-button {
+  color:#fff;
+  padding-bottom: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
+  border-radius: 5px;
+  background-color: #007bff;
+  border-color: #007bff;
+  border-style: none;
+}
+.search-button:hover{
+  background-color: #55a7ff;
+  transition: 0.1s;
+}
+#faplus{
+  border-style: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  padding: 2px 8px 6px 8px;
+  color:#fff;
+}
+#faplus:hover{
+  background-color: #55a7ff;
+  transition: 0.1s;
+}
+#registrarventa{
+  border-style: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  padding: 4px 10px 8px 10px;
+  color:#fff;
+}
+#registrarventa:hover{
+  background-color: #55a7ff;
+  transition: 0.1s;
+}
+#centertable{
+  text-align: center;
+}
+.titleventa{
+  text-align: center;
+  border-bottom: 2px solid #333;
+}
+.title{
+  text-align: center;
+}
+.tipopago{
+  border-bottom: 1px solid black;
+  border-radius: 0% !important; 
+}
+.tipopago:hover{
+  background-color: #007bff;
+  color: #fff;
 }
 
 /* Estilos para la selección  */
