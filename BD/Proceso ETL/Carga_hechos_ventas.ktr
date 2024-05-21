@@ -518,24 +518,24 @@
     </partitioning>
     <connection>conexion</connection>
     <sql>SELECT
-    dc.id_detalle_c AS id_hventa,
- 	C.id_cliente,
-   	dc.id_producto,
+    dv.id_detalle_venta AS id_hventa,
+ 	V.id_cliente,
+   	dv.id_producto,
     CONCAT(YEAR(fecha_compra), 
     LPAD(MONTH(fecha_compra), 2, '0'), 
     LPAD(DAY(fecha_compra), 2, '0'))
     AS id_tiempo,
- 	dc.cantidad_compra,
+ 	dv.cantidad_compra,
     tp.tipo_pago,
     te.tipo_entrega,
     te.estado_entrega,
-    dc.precio_unitario,
-	(dc.cantidad_compra * dc.precio_unitario) AS total_venta
+    dv.precio_unitario,
+	(dv.cantidad_compra * dv.precio_unitario) AS total_venta
 FROM 
-    Compra C
-INNER JOIN Detalle_compra dc ON C.id_compra = dc.id_compra
-INNER JOIN Tipo_pago tp ON C.id_tipo_pago = tp.id_tipo_pago
-INNER JOIN Tipo_entrega te ON C.id_entrega = te.id_entrega;
+    Venta V
+INNER JOIN Detalle_venta dv ON V.id_venta = dv.id_venta
+INNER JOIN Tipo_pago tp ON V.id_tipo_pago = tp.id_tipo_pago
+INNER JOIN Tipo_entrega te ON V.id_entrega = te.id_entrega;
 </sql>
     <limit>0</limit>
     <lookup/>

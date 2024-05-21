@@ -16,6 +16,7 @@ function Venta({ rol }) {
     const [fecha_compra, setFecha_compra] = useState('');
     const [hora_compra, setHora_compra] = useState('');
     const [precio_unitario, setPrecio_unitario] = useState('');
+    const [precio_venta, setPrecio_venta] = useState('');
     const [cantidad_compra, setCantidad_compra] = useState('');
 
     const [cliente, setCliente] = useState([]);
@@ -41,15 +42,17 @@ function Venta({ rol }) {
         setSearchQuery(e.target.value);
     };
 
-    const AgregarDetalleProducto = () => {
+    const AgregarDetalleProducto = (e) => {
+        e.preventDefault();
         if (selectedProducto && cantidad_compra) {
             const nuevoDetalle = {
                 id_producto: selectedProducto.id_producto,
                 nombre_producto: selectedProducto.nombre_producto,
-                precio_unitario: selectedProducto.precio_unitario,
+                precio_unitario: selectedProducto.precio_venta,
                 cantidad_compra: parseInt(cantidad_compra),
             };
            
+            setDetalle_venta([...detalle_venta, nuevoDetalle])
             setPrecio_unitario('');
             setCantidad_compra('');
             setSelectedProducto('');
@@ -67,7 +70,7 @@ function Venta({ rol }) {
         const id_cliente = cliente.id_cliente.toString();
         const nombre1_cliente = cliente.nombre1_cliente ? cliente.nombre1_cliente.toLowerCase() : '';
         const apellido1_cliente = cliente.apellido1_cliente ? cliente.apellido1_cliente.toLowerCase() : '';
-        const search = searchQuery.toLowerCase();
+       const search = searchQuery.toLowerCase();
 
         return (
             id_cliente.includes(search) ||
@@ -95,10 +98,10 @@ function Venta({ rol }) {
 
     const selectCliente = (cliente) => {
         setSelectedCliente(cliente);
-        setFormData((prevFormData) => ({
-            ...prevFormData,
+        setFormData({
+            ...formData,
             id_cliente: cliente.id_cliente,
-        }));
+    });
         closeClienteModal();
     };
 
@@ -120,10 +123,10 @@ function Venta({ rol }) {
 
     const selectTipoPago = (tipo_pago) => {
         setSelectedTipoPago(tipo_pago);
-        setFormData((prevFormData) => ({
-            ...prevFormData,
+        setFormData({
+            ...formData,
             id_tipo_pago: tipo_pago.id_tipo_pago,
-        }));
+        });
         closeTipoPagoModal();
     };
 
@@ -145,10 +148,10 @@ function Venta({ rol }) {
 
     const selectEntrega = (entrega) => {
         setSelectedEntrega(entrega);
-        setFormData((prevFormData) => ({
-            ...prevFormData,
+        setFormData({
+            ...formData,
             id_entrega: entrega.id_entrega,
-        }));
+        });
         closeEntregaModal();
     };
 
@@ -170,10 +173,10 @@ function Venta({ rol }) {
 
     const selectProducto = (producto) => {
         setSelectedProducto(producto);
-        setFormData((prevFormData) => ({
-            ...prevFormData,
+        setFormData({
+            ...formData,
             id_producto: producto.id_producto,
-        }));
+        });
         closeProductoModal();
     };
 
@@ -211,18 +214,20 @@ function Venta({ rol }) {
         setHora_compra(obtenerHoraActual());
     }, []);
 
-    const registrarVenta = () => {
-        if (selectedCliente && selectedTipoPago && selectedEntrega && fecha_compra && hora_compra && detalle_venta.length > 0) {
+    const registrarVenta = (e) => {
+        e.preventDefault();
+    
+        if (selectedCliente && selectedTipoPago && selectedEntrega && detalle_venta.length > 0) {
             const data = {
                 id_cliente: selectedCliente.id_cliente,
                 id_tipo_pago: selectedTipoPago.id_tipo_pago,
                 id_entrega: selectedEntrega.id_entrega,
                 fecha_compra,
                 hora_compra,
-                detalle_venta,
+                detalle_venta, // Asumiendo que detalle_venta incluye el precio_venta
             };
-
-            fetch('http://localhost:5000/crud/create_venta', {
+    
+            fetch('http://localhost:5000/crud/createventa', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -246,7 +251,9 @@ function Venta({ rol }) {
         } else {
             alert('Asegúrese de completar la información necesaria para registrar la venta.');
         }
-    };
+    };    
+    
+    
 
     return (
         <div>
@@ -340,7 +347,7 @@ function Venta({ rol }) {
                                             type="number"
                                             placeholder="Precio del producto"
                                             value={selectedProducto ? selectedProducto.precio_venta : ''}
-                                            onChange={(e) => setPrecio_unitario(e.target.value)}
+                                            onChange={(e) => setPrecio_venta(e.target.value)}
                                         />
                                     </FloatingLabel>
                                 </Col>

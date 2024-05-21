@@ -397,7 +397,7 @@
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>C:/Users/HP PROBOOK 445 G7/Desktop/Repositorios/VFS_BI/Proceso ETL/Carga_cliente.ktr</filename>
+      <filename>C:/Users/HP PROBOOK 445 G7/Desktop/Repositorios/VFS_BI/BD/Proceso ETL/Carga_cliente.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -436,7 +436,7 @@
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>C:/Users/HP PROBOOK 445 G7/Desktop/Repositorios/VFS_BI/Proceso ETL/Carga_tiempo.ktr</filename>
+      <filename>C:/Users/HP PROBOOK 445 G7/Desktop/Repositorios/VFS_BI/BD/Proceso ETL/Carga_tiempo.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -475,7 +475,7 @@
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>C:/Users/HP PROBOOK 445 G7/Desktop/Repositorios/VFS_BI/Proceso ETL/Carga_producto.ktr</filename>
+      <filename>C:/Users/HP PROBOOK 445 G7/Desktop/Repositorios/VFS_BI/BD/Proceso ETL/Carga_producto.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -514,7 +514,7 @@
       <attributes/>
       <specification_method>filename</specification_method>
       <trans_object_id/>
-      <filename>C:/Users/HP PROBOOK 445 G7/Desktop/Repositorios/VFS_BI/Proceso ETL/Carga_hechos_ventas.ktr</filename>
+      <filename>C:/Users/HP PROBOOK 445 G7/Desktop/Repositorios/VFS_BI/BD/Proceso ETL/Carga_hechos_ventas.ktr</filename>
       <transname/>
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>

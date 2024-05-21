@@ -10,17 +10,16 @@ app.use(express.json({ limit: '50mb' }));
 
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'KennyTellez',
-  password: 'incorrecto',
+  user: 'KennyTellez',  // Asegúrate de que estos detalles sean correctos
+  password: 'incorrecto',  // Cambia esto por tu contraseña real
   database: 'database_vfs'
-
 });
 
 db.connect((err) => {
   if (err) {
-    console.error('Error de conexion a la base de datos', err);
+    console.error('Error de conexión a la base de datos:', err);
   } else {
-    console.error('Conexion exitosa a la base de datos');
+    console.log('Conexión exitosa a la base de datos');
   }
 });
 
@@ -28,19 +27,17 @@ app.use(cors());
 
 app.listen(port, () => {
   console.log(`Servidor backend en funcionamiento en el puerto ${port}`);
-
 });
 
-app.use(cors());
-
+// Importar rutas CRUD y pasarlas a la aplicación
 const crudRoutes = require('./routes/crudRoutes.js')(db);
 app.use('/crud', crudRoutes);
 
+// Middleware para manejar errores de análisis JSON
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && 'body' in err) {
-    res.status(400).send({ error: 'Error en el analisis de JSON' })
+    res.status(400).send({ error: 'Error en el análisis de JSON' });
   } else {
     next();
   }
 });
-
