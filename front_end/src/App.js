@@ -20,6 +20,7 @@
   import Tipo_entrega from './pages/Tipo_entrega';
   import ListaTipoEntrega from './pages/ListaTipoEntrega';
   import Estadisticas from './pages/Estadisticas';
+  import Reportes_BI from './pages/Reportes_BI';
   import Catalogo from './pages/Catalogo';
   import Login from './pages/Login';
   import Venta from './pages/Venta';
@@ -62,6 +63,7 @@
           <Route path="/Tipo_entrega" element={userRol ? <Tipo_entrega rol={userRol} /> : <Navigate to="/sinacceso" />} />
           <Route path="/ListaTipoEntrega" element={userRol ? <ListaTipoEntrega rol={userRol} /> : <Navigate to="/sinacceso" />} />
           <Route path="/Estadisticas" element={userRol ? <Estadisticas rol={userRol} /> : <Navigate to="/sinacceso" />} />
+          <Route path="/Reportes_BI" element={userRol ? <Reportes_BI rol={userRol} /> : <Navigate to="/sinacceso" />} />
           <Route path="/Venta" element={userRol ? <Venta rol={userRol} /> : <Navigate to="/sinacceso" />} />
           <Route path="/sinacceso" element={<SinAcceso />} />
         </Routes>

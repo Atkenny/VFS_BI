@@ -9,6 +9,9 @@
   color: inherit;
   /* Usa el color heredado (generalmente, el color predeterminado) */
 }
+#powerbi{
+  margin-top: 70px;
+}
 
 .center-button {
   text-align: center;

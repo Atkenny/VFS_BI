@@ -31,7 +31,8 @@ CREATE TABLE dim_tiempo (
     fecha DATE,
     mes INT NOT NULL,
     dia INT NOT NULL,
-    anio INT
+    anio INT,
+    trimestre INT
 );
 
 -- Tabla de Hechos Venta

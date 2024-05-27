@@ -46,6 +46,10 @@ function Header({ rol }) {
                     <Link to="/Estadisticas" className="link-unstyled">Estadisticas</Link>
                   </Nav.Link>
 
+                  <Nav.Link>
+                    <Link to="/Reportes_BI" className="link-unstyled">Reportes BI</Link>
+                  </Nav.Link>
+
                   <NavDropdown title="Usuarios" id="usuarios">
                     <NavDropdown.Item>
                       <Link to="/Cliente" className="link-unstyled">Registrar Cliente</Link>
@@ -163,6 +167,10 @@ function Header({ rol }) {
 
                 <Nav.Link>
                   <Link to="/Estadisticas" className="link-unstyled">Estadisticas</Link>
+                </Nav.Link>
+
+                <Nav.Link>
+                  <Link to="/Reportes_BI" className="link-unstyled">Reportes BI</Link>
                 </Nav.Link>
 
                 <NavDropdown title="Usuarios" id="usuarios">

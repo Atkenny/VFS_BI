@@ -570,7 +570,8 @@
     fecha_compra AS Fecha,
     YEAR(fecha_compra) AS Anio,
     MONTH(fecha_compra) AS Mes,
-    DAY(fecha_compra) AS Dia
+    DAY(fecha_compra) AS Dia,
+	QUARTER(fecha_compra) AS Trimestre
 FROM 
     Venta
 GROUP BY 
@@ -697,6 +698,29 @@ GROUP BY
         <date_format_timezone>America/Managua</date_format_timezone>
         <lenient_string_to_number>N</lenient_string_to_number>
       </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>Trimestre</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>Extraccion_tiempo</origin>
+        <comments>Trimestre</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_NI</date_format_locale>
+        <date_format_timezone>America/Managua</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
     </row-meta>
     <attributes/>
     <cluster_schema/>
@@ -707,8 +731,8 @@ GROUP BY
       </output>
     </remotesteps>
     <GUI>
-      <xloc>200</xloc>
-      <yloc>100</yloc>
+      <xloc>192</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
