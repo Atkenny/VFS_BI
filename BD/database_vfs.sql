@@ -2,18 +2,18 @@ CREATE DATABASE database_vfs;
 USE database_vfs;
 
 -- Crear rol
-CREATE ROLE 'desarrollador';
+-- CREATE ROLE 'desarrollador';
 -- DROP ROLE 'desarrollador';
 
 -- Asignar permisos
 GRANT ALL ON database_vfs.* TO 'desarrollador';
 
 -- Rol Gisela Paola 
-CREATE USER 'GiselaPaola'@'localhost' IDENTIFIED BY 'correcto';
+-- CREATE USER 'GiselaPaola'@'localhost' IDENTIFIED BY 'correcto';
 -- DROP USER 'GiselaPaola'@'localhost';
 
 -- Rol de Kenny Tellez
-CREATE USER 'KennyTellez'@'localhost' IDENTIFIED BY 'incorrecto';
+-- CREATE USER 'KennyTellez'@'localhost' IDENTIFIED BY 'incorrecto';
 -- DROP USER 'KennyTellez'@'localhost';
 
 -- Privilegios
@@ -137,7 +137,7 @@ CREATE TABLE Detalle_venta(
   id_detalle_venta integer AUTO_INCREMENT PRIMARY KEY,
   id_venta integer NULL,
   id_producto integer NULL,
-  precio_unitario integer NULL, 
+  precio_unitario decimal(12,2) NULL, 
   cantidad_compra integer NULL
 );
 
