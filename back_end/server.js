@@ -23,6 +23,22 @@ db.connect((err) => {
   }
 });
 
+// Configuración de la conexión a la segunda base de datos
+const db2 = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: '@kekodroid',
+  database: 'datamart'
+});
+
+db2.connect((err) => {
+  if (err) {
+      console.error('Error de conexión a la segunda base de datos:', err);
+  } else {
+      console.log('Conexión exitosa a la segunda base de datos');
+  }
+});
+
 app.use(cors());
 
 app.listen(port, () => {
@@ -32,6 +48,11 @@ app.listen(port, () => {
 // Importar rutas CRUD y pasarlas a la aplicación
 const crudRoutes = require('./routes/crudRoutes.js')(db);
 app.use('/crud', crudRoutes);
+
+// Importar y usar rutas para la segunda base de datos
+const crudRoutes2 = require('./routes/crudRoutes2')(db2); // Pasa la instancia de la segunda base de datos a crudRoutesDb2
+app.use('/crud2', crudRoutes2);
+
 
 // Middleware para manejar errores de análisis JSON
 app.use((err, req, res, next) => {

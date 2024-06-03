@@ -141,7 +141,7 @@ CREATE TABLE Detalle_venta(
   cantidad_compra integer NULL
 );
 
-CREATE TABLE Resena (
+CREATE TABLE Resena(
   id_resena integer AUTO_INCREMENT PRIMARY KEY,
   id_cliente integer NOT NULL,
   id_producto integer NOT NULL,
