@@ -15,6 +15,7 @@ import html2canvas from "html2canvas";
 import Footer from "../components/Footer";
 
 function Estadisticas({ rol }) {
+  
   const [productos, setProductos] = useState([]);
   const [productosPorCategoria, setProductosPorCategoria] = useState([]);
   const [top5Productos, setTop5Productos] = useState([]);
@@ -614,7 +615,7 @@ function Estadisticas({ rol }) {
               <Card>
                 <Card.Header>Top 5 Clientes</Card.Header>
                 <Card.Body>
-                  <canvas id="myClientes" width="100%" height="100%"></canvas>
+                  <canvas id="top5Clientes" width="100%" height="100%"></canvas>
                 </Card.Body>
               </Card>
             </Col>
