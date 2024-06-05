@@ -142,7 +142,6 @@ VALUES
 (3, 'Envío express', 'Entregado', 'Calle Secundaria 789, Ciudad Principal'),
 (4, 'Recogida programada', 'Entregado', 'Plaza Mayor 101, Ciudad Secundaria');
 
--- Genarar mil ventas
 DELIMITER //
 
 CREATE PROCEDURE generar_ventas ()
@@ -152,8 +151,8 @@ BEGIN
     DECLARE fecha_compra DATE;
     DECLARE hora_compra TIME;
     
-    -- Inicializar la fecha de compra desde el 1 de enero de 2022
-    SET fecha_compra = '2022-01-01';
+    -- Inicializar la fecha de compra desde el 1 de enero de 2024
+    SET fecha_compra = '2024-01-01';
     
     WHILE contador < 1000 DO
         -- Generar valores aleatorios dentro de los rangos especificados
@@ -169,7 +168,12 @@ BEGIN
         VALUES (id_cliente, id_tipo_pago, id_entrega, fecha_compra, hora_compra);
         
         -- Incrementar la fecha de compra en 1 día para la próxima iteración
-        SET fecha_compra = DATE_ADD(fecha_compra, INTERVAL 1 DAY);
+        -- y asegurarse de que esté dentro del rango de enero a junio de 2024
+        IF fecha_compra >= '2024-06-30' THEN
+            SET fecha_compra = '2024-01-01';
+        ELSE
+            SET fecha_compra = DATE_ADD(fecha_compra, INTERVAL 1 DAY);
+        END IF;
         
         SET contador = contador + 1;
     END WHILE;
@@ -178,6 +182,7 @@ BEGIN
 END //
 
 DELIMITER ;
+
 
 CALL generar_ventas();
 

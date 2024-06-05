@@ -262,7 +262,7 @@ function Venta({ rol }) {
             <Container className="margen-contenedor">
                 <Card className="global-margin-top">
                     <Card.Body>
-                        <Card.Title className="mt-3 titleventa">Registro de venta</Card.Title>
+                        <Card.Title className="mt-3 title">Registro de venta</Card.Title>
                         <Form className="mt-3">
                             <Row className="g-3">
 

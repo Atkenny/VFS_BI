@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"; // Importación de React, useEffect y useState desde 'react'
-import Header from "../components/Header"; // Importación del componente Header desde la ruta '../components/Header'
+import React, { useEffect, useState } from "react";
+import Header from "../components/Header";
 import {
   ButtonGroup,
   Button,
@@ -7,46 +7,33 @@ import {
   Col,
   Card,
   Container,
-} from "react-bootstrap"; // Importación de componentes específicos desde 'react-bootstrap'
-import jsPDF from "jspdf"; // Importación de jsPDF para la generación de documentos PDF
-import Chart, { Title } from "chart.js/auto"; // Importación de Chart.js para gráficos
-import "../styles/App.css"; // Importación de estilos CSS desde '../styles/App.css'
-import Footer from "../components/Footer";
-// Importa la biblioteca html2canvas, que proporciona funciones para capturar y convertir el contenido HTML, incluidos elementos del DOM, en imágenes de lienzo (canvas).
+} from "react-bootstrap";
+import jsPDF from "jspdf";
+import Chart from "chart.js/auto";
+import "../styles/App.css";
 import html2canvas from "html2canvas";
-//import { backgroundClip } from 'html2canvas/dist/types/css/property-descriptors/background-clip';
-//import { display } from 'html2canvas/dist/types/css/property-descriptors/display';
-
-//Asegúrate de instalar html2canvas en tu proyecto si aún no lo has hecho.
-//  npm install html2canvas
-
-//Asegúrate de instalar jsPDF en tu proyecto si aún no lo has hecho
-//  npm install jspdf
-//Documentación:  https://github.com/parallax/jsPDF
-
-//Asegúrate de instalar Chart.js en tu proyecto si aún no lo has hecho
-//  npm install chart.js
-//Documentación:  https://www.chartjs.org/docs/latest/
-
-//Documentacion de react-bootstrap en caso de querer emplear otro componente en su intefaz
-//  https://react-bootstrap.netlify.app/
+import Footer from "../components/Footer";
 
 function Estadisticas({ rol }) {
-  // Declaración del componente Estadisticas con el argumento 'rol'
-
-  const [productos, setProductos] = useState([]); // Declaración del estado 'productos' y su función 'setProductos' a través de useState, con un valor inicial de un array vacío
-  const [myChart, setMyChart] = useState(null); // Declaración del estado 'myChart' y su función 'setMyChart' a través de useState, con un valor inicial de 'null'
-  //Variable de estado
+  const [productos, setProductos] = useState([]);
   const [productosPorCategoria, setProductosPorCategoria] = useState([]);
+  const [top5Productos, setTop5Productos] = useState([]);
+  const [top5Clientes, setTop5Clientes] = useState([]);
+  const [inversionYBeneficioMes, setInversionYBeneficioMes] = useState([]);
+  const [gananciasPorVenta, setGananciasPorVenta] = useState([]);
+  const [totalInversionBeneficio, setTotalInversionBeneficio] = useState([]);
+  const [gananciaPorGenero, setGananciaPorGenero] = useState([]);
+  const [generoClienteCompras, setGeneroClienteCompras] = useState([]);
+  const [comprasFisicaOnline, setComprasFisicaOnline] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/crud/read_producto") // Realiza una solicitud GET al servidor para obtener productos
-      .then((response) => response.json()) // Convierte la respuesta a formato JSON
-      .then((data) => setProductos(data)) // Almacena los productos en el estado 'productos'
+    fetch("http://localhost:5000/crud/read_producto")
+      .then((response) => response.json())
+      .then((data) => setProductos(data))
       .catch((error) =>
         console.error("Error al obtener los productos:", error)
-      ); // Manejo de errores en caso de fallar la solicitud
-  }, []); // Se ejecuta esta función solo una vez al cargar el componente
+      );
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:5000/crud/ProductosPorCategoria")
@@ -57,15 +44,79 @@ function Estadisticas({ rol }) {
       );
   }, []);
 
-  // Nuevo reporte de pastel
   useEffect(() => {
-    
-    // Destruir gráfico anterior si existe
-    const existingChart = Chart.getChart("myCategories");
-    if (existingChart) {
-      existingChart.destroy();
-    }
+    fetch("http://localhost:5000/crud2/top5Productos")
+      .then((response) => response.json())
+      .then((data) => setTop5Productos(data))
+      .catch((error) =>
+        console.error("Error al obtener los top 5 productos:", error)
+      );
+  }, []);
 
+  useEffect(() => {
+    fetch("http://localhost:5000/crud2/top5Clientes")
+      .then((response) => response.json())
+      .then((data) => setTop5Clientes(data))
+      .catch((error) =>
+        console.error("Error al obtener los top 5 clientes:", error)
+      );
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/crud2/InversionYBeneficioMes")
+      .then((response) => response.json())
+      .then((data) => setInversionYBeneficioMes(data))
+      .catch((error) =>
+        console.error("Error al obtener la inversión y beneficio por mes:", error)
+      );
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/crud2/GananciasPorVenta")
+      .then((response) => response.json())
+      .then((data) => setGananciasPorVenta(data))
+      .catch((error) =>
+        console.error("Error al obtener las ganancias por venta:", error)
+      );
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/crud2/Total_InvercionBeneficio")
+      .then((response) => response.json())
+      .then((data) => setTotalInversionBeneficio(data))
+      .catch((error) =>
+        console.error("Error al obtener la inversión y beneficio total:", error)
+      );
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/crud2/GananciaPorGenero")
+      .then((response) => response.json())
+      .then((data) => setGananciaPorGenero(data))
+      .catch((error) =>
+        console.error("Error al obtener la ganancia por género:", error)
+      );
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/crud2/GeneroClienteCompras")
+      .then((response) => response.json())
+      .then((data) => setGeneroClienteCompras(data))
+      .catch((error) =>
+        console.error("Error al obtener las compras por género de cliente:", error)
+      );
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/crud2/Compras_FisicaOnline")
+      .then((response) => response.json())
+      .then((data) => setComprasFisicaOnline(data))
+      .catch((error) =>
+        console.error("Error al obtener las compras físicas y online:", error)
+      );
+  }, []);
+
+  useEffect(() => {
     if (productosPorCategoria.length > 0) {
       const ctx = document.getElementById("myCategories");
 
@@ -76,7 +127,12 @@ function Estadisticas({ rol }) {
         (categoria) => categoria.CantidadProductos
       );
 
-      const chart = new Chart(ctx, {
+      const existingChart = Chart.getChart("myCategories");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      new Chart(ctx, {
         type: "pie",
         data: {
           labels: labels,
@@ -121,138 +177,559 @@ function Estadisticas({ rol }) {
   }, [productosPorCategoria]);
 
   useEffect(() => {
-    if (productos.length > 0) {
-      // Si hay productos disponibles
-      const ctx = document.getElementById("myChart"); // Obtiene el elemento canvas con el ID 'myChart'
+    if (top5Productos.length > 0) {
+      const ctx = document.getElementById("top5Productos");
 
-      if (myChart !== null) {
-        myChart.destroy(); // Destruye el gráfico existente antes de crear uno nuevo para evitar conflictos
+      const labels = top5Productos.map(
+        (producto) => producto.nombre_producto
+      );
+      const data = top5Productos.map(
+        (producto) => producto.total_vendido
+      );
+
+      const existingChart = Chart.getChart("top5Productos");
+      if (existingChart) {
+        existingChart.destroy();
       }
 
-      const nombresProductos = productos.map(
-        (producto) => producto.nombre_producto
-      ); // Extrae los nombres de los productos
-      const cantidades = productos.map((producto) => producto.cantidad); // Extrae las cantidades de los productos
-
-      const almacen = new Chart(ctx, {
-        // Crea un nuevo gráfico de tipo 'bar' con Chart.js y lo asigna al elemento canvas
+      new Chart(ctx, {
         type: "bar",
         data: {
-          labels: nombresProductos, // Asigna los nombres de productos como etiquetas para el eje X
+          labels: labels,
           datasets: [
             {
-              label: "Cantidad disponible", // Etiqueta para la leyenda del gráfico
-              data: cantidades, // Asigna las cantidades de productos para la visualización
-              backgroundColor: "rgba(54, 162, 235, 0.5)", // Define el color de fondo de las barras
-              borderColor: "rgba(54, 162, 235, 1)", // Define el color del borde de las barras
-              borderWidth: 1, // Define el ancho del borde de las barras
+              label: "Top 5 Productos Más Vendidos",
+              data: data,
+              backgroundColor: "rgba(75,192,192,0.5)",
+              borderColor: "rgba(75,192,192,1)",
+              borderWidth: 1,
             },
           ],
         },
         options: {
           scales: {
             y: {
-              beginAtZero: true, // Comienza el eje Y desde cero
+              beginAtZero: true,
             },
           },
         },
       });
-      setMyChart(almacen); // Guarda la referencia al nuevo gráfico en el estado 'myChart'
     }
-  }, [productos]); // Se ejecuta cada vez que hay cambios en 'productos'
+  }, [top5Productos]);
 
-  const generarReporteAlmacen = () => {
-    fetch("http://localhost:5000/crud/read_producto") // Realiza una solicitud GET al servidor para obtener productos
-      .then((response) => response.json()) // Convierte la respuesta a formato JSON
-      .then((productos) => {
-        const doc = new jsPDF(); // Crea un nuevo documento PDF con jsPDF
-        let y = 15; // Posición inicial en el eje Y dentro del documento PDF
+  useEffect(() => {
+    if (top5Clientes.length > 0) {
+      const ctx = document.getElementById("top5Clientes");
 
-        doc.text("Reporte de Estado de Almacén", 20, 10); // Agrega un título al documento PDF
+      const labels = top5Clientes.map(
+        (cliente) => cliente.nombre_cliente
+      );
+      const data = top5Clientes.map(
+        (cliente) => cliente.total_compras
+      );
 
-        productos.forEach((producto) => {
-          // Itera sobre los productos para generar el reporte
-          doc.text(`Nombre: ${producto.nombre_producto}`, 20, y); // Agrega el nombre del producto al documento PDF
-          doc.text(`Cantidad: ${producto.cantidad}`, 20, y + 10); // Agrega la cantidad del producto al documento PDF
+      const existingChart = Chart.getChart("top5Clientes");
+      if (existingChart) {
+        existingChart.destroy();
+      }
 
-          y += 30; // Incrementa la posición Y para el siguiente producto
-          if (y >= 280) {
-            // Si alcanza el final de la página, crea una nueva página
-            doc.addPage();
-            y = 15; // Reinicia la posición Y en la nueva página
-          }
-        });
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Top 5 Clientes con Más Compras",
+              data: data,
+              backgroundColor: "rgba(153,102,255,0.5)",
+              borderColor: "rgba(153,102,255,1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  }, [top5Clientes]);
 
-        doc.save("reporte_almacen.pdf"); // Descarga el documento PDF con el nombre 'reporte_almacen.pdf'
-      })
-      .catch((error) =>
-        console.error("Error al obtener los productos:", error)
-      ); // Manejo de errores en caso de fallar la solicitud
-  };
+  useEffect(() => {
+    if (inversionYBeneficioMes.length > 0) {
+      const ctx = document.getElementById("inversionYBeneficioMes");
 
-  // Definición de la función generarReporteAlmacenImg como una función asíncrona
-  const generarReporteAlmacenImg = async () => {
-    try {
-      // Utiliza html2canvas para capturar el contenido del elemento con el ID 'myChart' y obtener un objeto canvas
-      const canvas = await html2canvas(document.getElementById("myChart"));
-      // Crea un nuevo objeto jsPDF para trabajar con documentos PDF
-      const pdf = new jsPDF();
-      // Convierte el objeto canvas a una URL de datos en formato PNG
-      const imgData = canvas.toDataURL("image/png");
-      // Añade un texto al documento PDF
-      pdf.text("Reporte de Estado de Almacén", 20, 10);
-      // Añade la imagen capturada del gráfico al documento PDF, con ajustes de coordenadas y tamaño
-      pdf.addImage(imgData, "PNG", 10, 20, 100, 100);
-      // Guarda el documento PDF con un nombre específico
-      pdf.save("reporte_almacen_con_grafico.pdf");
-    } catch (error) {
-      // Captura y maneja cualquier error que pueda ocurrir durante la ejecución del bloque try
-      console.error("Error al generar el reporte con imagen:", error);
+      const labels = inversionYBeneficioMes.map(
+        (item) => `${item.nombre_producto} - ${item.mes}/${item.anio}`
+      );
+      const inversionData = inversionYBeneficioMes.map(
+        (item) => item.monto_inversion
+      );
+      const beneficioData = inversionYBeneficioMes.map(
+        (item) => item.monto_beneficio
+      );
+
+      const existingChart = Chart.getChart("inversionYBeneficioMes");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Monto de Inversión",
+              data: inversionData,
+              backgroundColor: "rgba(255,99,132,0.5)",
+              borderColor: "rgba(255,99,132,1)",
+              borderWidth: 1,
+            },
+            {
+              label: "Monto de Beneficio",
+              data: beneficioData,
+              backgroundColor: "rgba(54,162,235,0.5)",
+              borderColor: "rgba(54,162,235,1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  }, [inversionYBeneficioMes]);
+
+  useEffect(() => {
+    if (gananciasPorVenta.length > 0) {
+      const ctx = document.getElementById("gananciasPorVenta");
+
+      const labels = gananciasPorVenta.map(
+        (item) => `${item.mes}/${item.anio}`
+      );
+      const gananciasData = gananciasPorVenta.map(
+        (item) => item.total_ganancias
+      );
+      const ventasData = gananciasPorVenta.map(
+        (item) => item.total_cantidad_ventas
+      );
+
+      const existingChart = Chart.getChart("gananciasPorVenta");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Total Ganancias",
+              data: gananciasData,
+              backgroundColor: "rgba(255,159,64,0.5)",
+              borderColor: "rgba(255,159,64,1)",
+              borderWidth: 1,
+            },
+            {
+              label: "Total Cantidad de Ventas",
+              data: ventasData,
+              backgroundColor: "rgba(75,192,192,0.5)",
+              borderColor: "rgba(75,192,192,1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  }, [gananciasPorVenta]);
+
+  useEffect(() => {
+    if (totalInversionBeneficio.length > 0) {
+      const ctx = document.getElementById("totalInversionBeneficio");
+
+      const labels = ["Total Inversión", "Total Beneficio"];
+      const data = [
+        totalInversionBeneficio[0].total_inversion,
+        totalInversionBeneficio[0].total_beneficio,
+      ];
+
+      const existingChart = Chart.getChart("totalInversionBeneficio");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Inversión y Beneficio Total",
+              data: data,
+              backgroundColor: [
+                "rgba(255,99,132,0.5)",
+                "rgba(54,162,235,0.5)",
+              ],
+              borderColor: [
+                "rgba(255,99,132,1)",
+                "rgba(54,162,235,1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            title: {
+              display: true,
+              text: "Inversión y Beneficio Total",
+            },
+          },
+        },
+      });
+    }
+  }, [totalInversionBeneficio]);
+
+  useEffect(() => {
+    if (gananciaPorGenero.length > 0) {
+      const ctx = document.getElementById("gananciaPorGenero");
+
+      const labels = gananciaPorGenero.map(
+        (item) => `${item.genero_producto} - ${item.mes}/${item.anio}`
+      );
+      const cantidadData = gananciaPorGenero.map(
+        (item) => item.cantidad_compras
+      );
+      const gananciaData = gananciaPorGenero.map(
+        (item) => item.monto_ganancia
+      );
+
+      const existingChart = Chart.getChart("gananciaPorGenero");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Cantidad de Compras",
+              data: cantidadData,
+              backgroundColor: "rgba(153,102,255,0.5)",
+              borderColor: "rgba(153,102,255,1)",
+              borderWidth: 1,
+            },
+            {
+              label: "Monto de Ganancia",
+              data: gananciaData,
+              backgroundColor: "rgba(75,192,192,0.5)",
+              borderColor: "rgba(75,192,192,1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  }, [gananciaPorGenero]);
+
+  useEffect(() => {
+    if (generoClienteCompras.length > 0) {
+      const ctx = document.getElementById("generoClienteCompras");
+
+      const labels = generoClienteCompras.map(
+        (item) => item.genero_cliente
+      );
+      const comprasData = generoClienteCompras.map(
+        (item) => item.total_compras
+      );
+      const montoData = generoClienteCompras.map(
+        (item) => item.monto_total_compras
+      );
+
+      const existingChart = Chart.getChart("generoClienteCompras");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Total Compras",
+              data: comprasData,
+              backgroundColor: "rgba(255,99,132,0.5)",
+              borderColor: "rgba(255,99,132,1)",
+              borderWidth: 1,
+            },
+            {
+              label: "Monto Total Compras",
+              data: montoData,
+              backgroundColor: "rgba(54,162,235,0.5)",
+              borderColor: "rgba(54,162,235,1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  }, [generoClienteCompras]);
+
+  useEffect(() => {
+    if (comprasFisicaOnline.length > 0) {
+      const ctx = document.getElementById("comprasFisicaOnline");
+
+      const labels = comprasFisicaOnline.map(
+        (item) => item.tipo_entrega
+      );
+      const cantidadData = comprasFisicaOnline.map(
+        (item) => item.cantidad_comprada
+      );
+      const montoData = comprasFisicaOnline.map(
+        (item) => item.monto_total
+      );
+
+      const existingChart = Chart.getChart("comprasFisicaOnline");
+      if (existingChart) {
+        existingChart.destroy();
+      }
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Cantidad Comprada",
+              data: cantidadData,
+              backgroundColor: "rgba(255,206,86,0.5)",
+              borderColor: "rgba(255,206,86,1)",
+              borderWidth: 1,
+            },
+            {
+              label: "Monto Total",
+              data: montoData,
+              backgroundColor: "rgba(75,192,192,0.5)",
+              borderColor: "rgba(75,192,192,1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    }
+  }, [comprasFisicaOnline]);
+
+  const handleDownloadPDF = () => {
+    const captureElement = document.getElementById("capture");
+
+    if (captureElement) {
+      html2canvas(captureElement, { scrollY: -window.scrollY }).then(
+        (canvas) => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new jsPDF("p", "mm", "a4");
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+          pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+          pdf.save("estadisticas.pdf");
+        }
+      );
     }
   };
 
   return (
-    <div style={{ maxHeight: "600px", overflow: "auto" }}> {/* Estilos aplicados al contenedor principal */}
+    <>
       <Header rol={rol} />
-  
-      <Container className="margen-contenedor">
-        <Row className="g-3">
-          <Col sm="6" md="6" lg="4">
-            <Card>
-              <Card.Body>
-                <Card.Title>Estado del almacen</Card.Title>
-                <canvas id="myChart" height="300"></canvas>
-              </Card.Body>
-  
-              <Card.Body>
-                <ButtonGroup>
-                  <Button onClick={generarReporteAlmacen}>
-                    Generar reporte
-                  </Button>
-                  <Button onClick={generarReporteAlmacenImg} className="ml-2">
-                    Generar reporte con imagen
-                  </Button>
-                </ButtonGroup>
-              </Card.Body>
-            </Card>
-          </Col>
-  
-          <Col sm="6" md="6" lg="4">
-            <Card>
-              <Card.Body>
-                <Card.Title>Productos por Categoría</Card.Title>
-                <canvas id="myCategories" height="120"></canvas>
-              </Card.Body>
-              <Button onClick={generarReporteAlmacen} variant="primary" size="sm">Generar PDF</Button>
-            </Card>
-          </Col>
+      <Container className="espaciado" fluid>
 
+
+        <Row>
+          <Col className="title">
+            <h1>Estadísticas de Productos</h1>
+          </Col>
         </Row>
-      </Container>
 
-    </div>
+
+        <div id="capture">
+
+
+          <Row className="mt-4">
+
+
+            <Col md={6}>
+              <Card>
+                <Card.Header>Productos por Categoría</Card.Header>
+                <Card.Body>
+                  <canvas id="myCategories" width="100%" height="100%"></canvas>
+                </Card.Body>
+              </Card>
+            </Col>
+
+
+            <Col md={6}>
+              <Card>
+                <Card.Header>Top 5 Clientes</Card.Header>
+                <Card.Body>
+                  <canvas id="myClientes" width="100%" height="100%"></canvas>
+                </Card.Body>
+              </Card>
+            </Col>
+
+
+          </Row>
+
+
+          <Row className="mt-4">
+
+
+            <Col md={6}>
+              <Card>
+                <Card.Header>Inversión y Beneficio por Mes</Card.Header>
+                <Card.Body>
+                  <canvas
+                    id="inversionYBeneficioMes"
+                    width="100%"
+                    height="100%"
+                  ></canvas>
+                </Card.Body>
+              </Card>
+            </Col>
+
+
+            <Col md={6}>
+              <Card>
+                <Card.Header>Ganancias por Venta</Card.Header>
+                <Card.Body>
+                  <canvas id="gananciasPorVenta" width="100%" height="100%"></canvas>
+                </Card.Body>
+              </Card>
+            </Col>
+
+
+          </Row>
+
+
+          <Row className="mt-4">
+
+
+            <Col md={6}>
+              <Card>
+                <Card.Header>Inversión y Beneficio Total</Card.Header>
+                <Card.Body>
+                  <canvas
+                    id="totalInversionBeneficio"
+                    width="100%"
+                    height="100%"
+                  ></canvas>
+                </Card.Body>
+              </Card>
+            </Col>
+
+
+            <Col md={6}>
+              <Card>
+                <Card.Header>Ganancia por Género</Card.Header>
+                <Card.Body>
+                  <canvas id="gananciaPorGenero" width="100%" height="100%"></canvas>
+                </Card.Body>
+              </Card>
+            </Col>
+
+
+          </Row>
+
+
+          <Row className="mt-4">
+
+
+            <Col md={6}>
+              <Card>
+                <Card.Header>Compras por Género de Cliente</Card.Header>
+                <Card.Body>
+                  <canvas
+                    id="generoClienteCompras"
+                    width="100%"
+                    height="100%"
+                  ></canvas>
+                </Card.Body>
+              </Card>
+            </Col>
+            
+
+            <Col md={6}>
+              <Card>
+                <Card.Header>Compras Físicas vs. Online</Card.Header>
+                <Card.Body>
+                  <canvas
+                    id="comprasFisicaOnline"
+                    width="100%"
+                    height="100%"
+                  ></canvas>
+                </Card.Body>
+              </Card>
+            </Col>
+
+
+          </Row>
+
+
+        </div>
+
+
+        <Row className="mt-4">
+          <Col className="text-center">
+            <Button onClick={handleDownloadPDF}>Descargar PDF</Button>
+          </Col>
+        </Row>
+
+
+      </Container>
+    </>
   );
-  
 }
 
-export default Estadisticas; // Exporta el componente Estadisticas para su uso en otras partes de la aplicación
+export default Estadisticas;

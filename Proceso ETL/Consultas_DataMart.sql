@@ -72,8 +72,8 @@ Use DataMart;
 -- Tienda fisica y en linea
 SELECT 
     CASE 
-        WHEN tipo_pago IN ('Efectivo') THEN 'Tienda física'
-        WHEN tipo_pago IN ('Transferencia bancaria', 'Tarjeta de crédito') THEN 'En línea'
+        WHEN tipo_pago IN ('Efectivo', 'Transferencia bancaria') THEN 'Tienda física'
+        WHEN tipo_pago IN ('Tarjeta de crédito') THEN 'En línea'
         ELSE 'Otro'
     END AS tipo_entrega,
     SUM(cantidad_compra) AS cantidad_comprada,
@@ -84,7 +84,7 @@ WHERE
     tipo_pago IN ('Efectivo', 'Transferencia bancaria', 'Tarjeta de crédito')
 GROUP BY 
     CASE 
-        WHEN tipo_pago IN ('Efectivo, Transferencia bancaria') THEN 'Tienda física'
+        WHEN tipo_pago IN ('Efectivo', 'Transferencia bancaria') THEN 'Tienda física'
         WHEN tipo_pago IN ('Tarjeta de crédito') THEN 'En línea'
         ELSE 'Otro'
     END;
