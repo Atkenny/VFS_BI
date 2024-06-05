@@ -686,6 +686,7 @@ function Estadisticas({ rol }) {
           <Row className="mt-4">
 
 
+
             <Col md={6}>
               <Card>
                 <Card.Header>Compras por Género de Cliente</Card.Header>
