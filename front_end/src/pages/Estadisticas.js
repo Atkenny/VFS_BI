@@ -15,7 +15,6 @@ import html2canvas from "html2canvas";
 import Footer from "../components/Footer";
 
 function Estadisticas({ rol }) {
-  
   const [productos, setProductos] = useState([]);
   const [productosPorCategoria, setProductosPorCategoria] = useState([]);
   const [top5Productos, setTop5Productos] = useState([]);
@@ -26,6 +25,10 @@ function Estadisticas({ rol }) {
   const [gananciaPorGenero, setGananciaPorGenero] = useState([]);
   const [generoClienteCompras, setGeneroClienteCompras] = useState([]);
   const [comprasFisicaOnline, setComprasFisicaOnline] = useState([]);
+  function formatearNumeroConComas(numero) {
+    const numeroFormateado = Number(numero).toFixed(2);
+    return numeroFormateado.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   useEffect(() => {
     fetch("http://localhost:5000/crud/read_producto")
@@ -68,7 +71,10 @@ function Estadisticas({ rol }) {
       .then((response) => response.json())
       .then((data) => setInversionYBeneficioMes(data))
       .catch((error) =>
-        console.error("Error al obtener la inversión y beneficio por mes:", error)
+        console.error(
+          "Error al obtener la inversión y beneficio por mes:",
+          error
+        )
       );
   }, []);
 
@@ -104,7 +110,10 @@ function Estadisticas({ rol }) {
       .then((response) => response.json())
       .then((data) => setGeneroClienteCompras(data))
       .catch((error) =>
-        console.error("Error al obtener las compras por género de cliente:", error)
+        console.error(
+          "Error al obtener las compras por género de cliente:",
+          error
+        )
       );
   }, []);
 
@@ -181,12 +190,8 @@ function Estadisticas({ rol }) {
     if (top5Productos.length > 0) {
       const ctx = document.getElementById("top5Productos");
 
-      const labels = top5Productos.map(
-        (producto) => producto.nombre_producto
-      );
-      const data = top5Productos.map(
-        (producto) => producto.total_vendido
-      );
+      const labels = top5Productos.map((producto) => producto.nombre_producto);
+      const data = top5Productos.map((producto) => producto.total_vendido);
 
       const existingChart = Chart.getChart("top5Productos");
       if (existingChart) {
@@ -222,12 +227,8 @@ function Estadisticas({ rol }) {
     if (top5Clientes.length > 0) {
       const ctx = document.getElementById("top5Clientes");
 
-      const labels = top5Clientes.map(
-        (cliente) => cliente.nombre_cliente
-      );
-      const data = top5Clientes.map(
-        (cliente) => cliente.total_compras
-      );
+      const labels = top5Clientes.map((cliente) => cliente.nombre_cliente);
+      const data = top5Clientes.map((cliente) => cliente.total_compras);
 
       const existingChart = Chart.getChart("top5Clientes");
       if (existingChart) {
@@ -384,14 +385,8 @@ function Estadisticas({ rol }) {
             {
               label: "Inversión y Beneficio Total",
               data: data,
-              backgroundColor: [
-                "rgba(255,99,132,0.5)",
-                "rgba(54,162,235,0.5)",
-              ],
-              borderColor: [
-                "rgba(255,99,132,1)",
-                "rgba(54,162,235,1)",
-              ],
+              backgroundColor: ["rgba(255,99,132,0.5)", "rgba(54,162,235,0.5)"],
+              borderColor: ["rgba(255,99,132,1)", "rgba(54,162,235,1)"],
               borderWidth: 1,
             },
           ],
@@ -422,9 +417,7 @@ function Estadisticas({ rol }) {
       const cantidadData = gananciaPorGenero.map(
         (item) => item.cantidad_compras
       );
-      const gananciaData = gananciaPorGenero.map(
-        (item) => item.monto_ganancia
-      );
+      const gananciaData = gananciaPorGenero.map((item) => item.monto_ganancia);
 
       const existingChart = Chart.getChart("gananciaPorGenero");
       if (existingChart) {
@@ -467,9 +460,7 @@ function Estadisticas({ rol }) {
     if (generoClienteCompras.length > 0) {
       const ctx = document.getElementById("generoClienteCompras");
 
-      const labels = generoClienteCompras.map(
-        (item) => item.genero_cliente
-      );
+      const labels = generoClienteCompras.map((item) => item.genero_cliente);
       const comprasData = generoClienteCompras.map(
         (item) => item.total_compras
       );
@@ -518,15 +509,11 @@ function Estadisticas({ rol }) {
     if (comprasFisicaOnline.length > 0) {
       const ctx = document.getElementById("comprasFisicaOnline");
 
-      const labels = comprasFisicaOnline.map(
-        (item) => item.tipo_entrega
-      );
+      const labels = comprasFisicaOnline.map((item) => item.tipo_entrega);
       const cantidadData = comprasFisicaOnline.map(
         (item) => item.cantidad_comprada
       );
-      const montoData = comprasFisicaOnline.map(
-        (item) => item.monto_total
-      );
+      const montoData = comprasFisicaOnline.map((item) => item.monto_total);
 
       const existingChart = Chart.getChart("comprasFisicaOnline");
       if (existingChart) {
@@ -565,8 +552,41 @@ function Estadisticas({ rol }) {
     }
   }, [comprasFisicaOnline]);
 
-  const handleDownloadPDF = () => {
-    const captureElement = document.getElementById("capture");
+  const generarReporteProductosporCategoria = () => {
+    fetch("http://localhost:5000/crud/ProductosPorCategoria")
+      .then((response) => response.json())
+      .then((cantidadproducto) => {
+        console.log("Productos por Categoria:", cantidadproducto);
+
+        const doc = new jsPDF();
+        doc.text("Reporte Productos por Categoria", 20, 10);
+
+        const headers = ["Categoria", "Cantidad de Producto"];
+        const data = cantidadproducto.map((cantidadesproducto) => [
+          cantidadesproducto.nombre_categoria,
+          cantidadesproducto.CantidadProductos
+        ]);
+
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: [headers],
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
+
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
+
+  const handleDownloadPDF = (canvasId) => {
+    const captureElement = document.getElementById(canvasId);
 
     if (captureElement) {
       html2canvas(captureElement, { scrollY: -window.scrollY }).then(
@@ -576,7 +596,7 @@ function Estadisticas({ rol }) {
           const pdfWidth = pdf.internal.pageSize.getWidth();
           const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
           pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-          pdf.save("estadisticas.pdf");
+          pdf.save("Estadisticas.pdf");
         }
       );
     }
@@ -586,30 +606,35 @@ function Estadisticas({ rol }) {
     <>
       <Header rol={rol} />
       <Container className="espaciado" fluid>
-
-
         <Row>
           <Col className="title">
             <h1>Estadísticas de Productos</h1>
           </Col>
         </Row>
 
-
-        <div id="capture">
-
-
+        <div>
           <Row className="mt-4">
-
-
             <Col md={6}>
               <Card>
                 <Card.Header>Productos por Categoría</Card.Header>
                 <Card.Body>
                   <canvas id="myCategories" width="100%" height="100%"></canvas>
                 </Card.Body>
+                <Row className="mt-4">
+                  <Col className="text-center">
+                    <Button
+                      className="botongraf"
+                      onClick={() => handleDownloadPDF("myCategories")}
+                    >
+                      Descargar Grafico
+                    </Button>
+                    <Button onClick={generarReporteProductosporCategoria}>
+                      Descargar Listado
+                    </Button>
+                  </Col>
+                </Row>
               </Card>
             </Col>
-
 
             <Col md={6}>
               <Card>
@@ -617,16 +642,26 @@ function Estadisticas({ rol }) {
                 <Card.Body>
                   <canvas id="top5Clientes" width="100%" height="100%"></canvas>
                 </Card.Body>
+                <Row className="mt-4">
+                  <Col className="text-center">
+                    <Button
+                      className="botongraf"
+                      onClick={() => handleDownloadPDF("top5Clientes")}
+                    >
+                      Descargar Grafico
+                    </Button>
+                    <Button
+                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                    >
+                      Descargar Listado
+                    </Button>
+                  </Col>
+                </Row>
               </Card>
             </Col>
-
-
           </Row>
 
-
           <Row className="mt-4">
-
-
             <Col md={6}>
               <Card>
                 <Card.Header>Inversión y Beneficio por Mes</Card.Header>
@@ -637,26 +672,56 @@ function Estadisticas({ rol }) {
                     height="100%"
                   ></canvas>
                 </Card.Body>
+                <Row className="mt-4">
+                  <Col className="text-center">
+                    <Button
+                      className="botongraf"
+                      onClick={() =>
+                        handleDownloadPDF("inversionYBeneficioMes")
+                      }
+                    >
+                      Descargar Grafico
+                    </Button>
+                    <Button
+                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                    >
+                      Descargar Listado
+                    </Button>
+                  </Col>
+                </Row>
               </Card>
             </Col>
-
 
             <Col md={6}>
               <Card>
                 <Card.Header>Ganancias por Venta</Card.Header>
                 <Card.Body>
-                  <canvas id="gananciasPorVenta" width="100%" height="100%"></canvas>
+                  <canvas
+                    id="gananciasPorVenta"
+                    width="100%"
+                    height="100%"
+                  ></canvas>
                 </Card.Body>
+                <Row className="mt-4">
+                  <Col className="text-center">
+                    <Button
+                      className="botongraf"
+                      onClick={() => handleDownloadPDF("gananciasPorVenta")}
+                    >
+                      Descargar Grafico
+                    </Button>
+                    <Button
+                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                    >
+                      Descargar Listado
+                    </Button>
+                  </Col>
+                </Row>
               </Card>
             </Col>
-
-
           </Row>
 
-
           <Row className="mt-4">
-
-
             <Col md={6}>
               <Card>
                 <Card.Header>Inversión y Beneficio Total</Card.Header>
@@ -667,27 +732,56 @@ function Estadisticas({ rol }) {
                     height="100%"
                   ></canvas>
                 </Card.Body>
+                <Row className="mt-4">
+                  <Col className="text-center">
+                    <Button
+                      className="botongraf"
+                      onClick={() =>
+                        handleDownloadPDF("totalInversionBeneficio")
+                      }
+                    >
+                      Descargar Grafico
+                    </Button>
+                    <Button
+                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                    >
+                      Descargar Listado
+                    </Button>
+                  </Col>
+                </Row>
               </Card>
             </Col>
-
 
             <Col md={6}>
               <Card>
                 <Card.Header>Ganancia por Género</Card.Header>
                 <Card.Body>
-                  <canvas id="gananciaPorGenero" width="100%" height="100%"></canvas>
+                  <canvas
+                    id="gananciaPorGenero"
+                    width="100%"
+                    height="100%"
+                  ></canvas>
                 </Card.Body>
+                <Row className="mt-4">
+                  <Col className="text-center">
+                    <Button
+                      className="botongraf"
+                      onClick={() => handleDownloadPDF("gananciaPorGenero")}
+                    >
+                      Descargar Grafico
+                    </Button>
+                    <Button
+                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                    >
+                      Descargar Listado
+                    </Button>
+                  </Col>
+                </Row>
               </Card>
             </Col>
-
-
           </Row>
 
-
           <Row className="mt-4">
-
-
-
             <Col md={6}>
               <Card>
                 <Card.Header>Compras por Género de Cliente</Card.Header>
@@ -697,10 +791,26 @@ function Estadisticas({ rol }) {
                     width="100%"
                     height="100%"
                   ></canvas>
+                  <Row className="mt-4">
+                    <Col className="text-center">
+                      <Button
+                        className="botongraf"
+                        onClick={() =>
+                          handleDownloadPDF("generoClienteCompras")
+                        }
+                      >
+                        Descargar Grafico
+                      </Button>
+                      <Button
+                        onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                      >
+                        Descargar Listado
+                      </Button>
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>
-            
 
             <Col md={6}>
               <Card>
@@ -711,24 +821,26 @@ function Estadisticas({ rol }) {
                     width="100%"
                     height="100%"
                   ></canvas>
+                  <Row className="mt-4">
+                    <Col className="text-center">
+                      <Button
+                        className="botongraf"
+                        onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                      >
+                        Descargar Grafico
+                      </Button>
+                      <Button
+                        onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                      >
+                        Descargar Listado
+                      </Button>
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>
-
-
           </Row>
-
-
         </div>
-
-
-        <Row className="mt-4">
-          <Col className="text-center">
-            <Button onClick={handleDownloadPDF}>Descargar PDF</Button>
-          </Col>
-        </Row>
-
-
       </Container>
     </>
   );

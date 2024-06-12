@@ -13,5 +13,18 @@
     "express": "^4.18.2",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "jasmine": "^5.1.0",
+    "jasmine-core": "^5.1.2",
+    "karma": "^6.4.3",
+    "karma-browserify": "^8.1.0",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-edge-launcher": "^0.4.2",
+    "karma-jasmine": "^5.1.0",
+    "karma-junit-reporter": "^2.0.1",
+    "karma-sonarqube-reporter": "^1.4.0",
+    "karma-sonarqube-unit-reporter": "^0.0.23"
   }
 }
