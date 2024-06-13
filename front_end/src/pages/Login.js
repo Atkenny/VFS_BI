@@ -1,30 +1,29 @@
 import React, { useState } from 'react';
-import { Form, Button, Card, Container, Row, Col, FloatingLabel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importar estilos de Bootstrap
+import '../styles/Login.css'; 
 
 const Login = ({ setRol }) => {
   const navigate = useNavigate();
   const [nombre_Usuario, setNombre_Usuario] = useState('');
   const [contrasena, setContrasena] = useState('');
-  const [error, setError] = useState(null); // Nuevo estado para manejar errores
+  const [error, setError] = useState(null); 
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Objeto con los datos del formulario
     const formData = {
       nombre_Usuario,
-      contrasena
+      contrasena,
     };
 
     try {
       const response = await fetch('http://localhost:5000/crud/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -47,68 +46,44 @@ const Login = ({ setRol }) => {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
-      <Row className="justify-content-md-center">
-        <Col md={12}>
-          <Card>
-            <Card.Body>
-              <Card.Title className="mb-3">Inicio de Sesión</Card.Title>
-              <Form onSubmit={handleSubmit}>
-
-                <Row>
-                  <Col sm="12" md="12" lg="12" className="mb-3">
-                    <FloatingLabel controlId="nombre_Usuario" label="Ingrese su usuario">
-                      <Form.Control
-                        placeholder="Ingrese su usuario"
-                        type="text"
-                        value={nombre_Usuario}
-                        onChange={(e) => setNombre_Usuario(e.target.value)}
-                        onClick={handleInputClick}
-                      />
-                    </FloatingLabel>
-                  </Col>
-
-                  <Col sm="12" md="12" lg="12">
-                    <FloatingLabel controlId="contrasena" label="Ingrese su contraseña">
-                      <Form.Control
-                        placeholder="Ingrese su contraseña"
-                        type="password"
-                        value={contrasena}
-                        onChange={(e) => setContrasena(e.target.value)}
-                        onClick={handleInputClick}
-                      />
-                    </FloatingLabel>
-                  </Col>
-                </Row>
-
-                {/* Mensaje de error */}
-                <Row className="mt-3">
-                  <Col>
-                    {error && (
-                      <div className="alert alert-danger" role="alert">
-                        {error}
-                      </div>
-                    )}
-                  </Col>
-                </Row>
-
-                <Row className="mb-3">
-                  <Col sm="12" md="15" lg="12">
-                    <div className="center-button">
-                      <Button variant="primary" type="submit" block className="mt-3">
-                        Iniciar Sesión
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <div className="login-container">
+      <div className="login-box">
+        <form onSubmit={handleSubmit}>
+          <div className="user-box">
+            <input
+              type="text"
+              required
+              value={nombre_Usuario}
+              onChange={(e) => setNombre_Usuario(e.target.value)}
+              onClick={handleInputClick}
+            />
+            <label>Ingrese su usuario</label>
+          </div>
+          <div className="user-box">
+            <input
+              type="password"
+              required
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
+              onClick={handleInputClick}
+            />
+            <label>Ingrese su contraseña</label>
+          </div>
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+          <center>
+            <button className='btn-anim1' type="submit">
+              Iniciar Sesión
+              <span></span>
+            </button>
+          </center>
+        </form>
+      </div>
+    </div>
   );
-
 };
 
 export default Login;

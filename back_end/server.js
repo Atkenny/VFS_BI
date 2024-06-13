@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
@@ -10,8 +10,8 @@ app.use(express.json({ limit: '50mb' }));
 
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'KennyTellez',  // Asegúrate de que estos detalles sean correctos
-  password: 'incorrecto',  // Cambia esto por tu contraseña real
+  user: 'root',  // Asegúrate de que estos detalles sean correctos
+  password: '2105Oney',  // Cambia esto por tu contraseña real
   database: 'database_vfs'
 });
 
@@ -27,7 +27,7 @@ db.connect((err) => {
 const db2 = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '@kekodroid',
+  password: '2105Oney',
   database: 'datamart'
 });
 

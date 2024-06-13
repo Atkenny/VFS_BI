@@ -605,14 +605,14 @@ function Estadisticas({ rol }) {
   return (
     <>
       <Header rol={rol} />
-      <Container className="espaciado" fluid>
+      <Container style={{ backgroundColor: '#303030', minHeight: '100vh', paddingTop:'70px', marginTop:'0px' }} className="espaciado" fluid>
         <Row>
           <Col className="title">
-            <h1>Estadísticas de Productos</h1>
+            <h1 style={{ color: '#ffff'}} >Estadísticas de Productos</h1>
           </Col>
         </Row>
 
-        <div>
+        <div >
           <Row className="mt-4">
             <Col md={6}>
               <Card>

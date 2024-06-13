@@ -49,14 +49,14 @@ function Catalogo({ rol }) {
   }, []);
 
   return (
-    <div>
+    <div style={{ backgroundColor: '#303030', minHeight: '100vh', paddingTop:'10px' }}>
       <Header rol={rol} />
-
+      
       <Container className="margen-contenedor">
         <Row className="mb-3">
           <Col sm="12" md="6" lg="12">
             <FloatingLabel controlId="search" label="Buscar">
-              <Form.Control
+              <Form.Control style={{ backgroundColor: '#606060', border:'solid 1.5px #0000'}}
                 type="text"
                 placeholder="Buscar"
                 value={searchQuery}
@@ -69,7 +69,7 @@ function Catalogo({ rol }) {
         <Row className="g-3">
           {filteredProductos.map((producto) => (
             <Col sm="12" md="3" lg="3" key={producto.id}>
-              <Card className="h-100">
+              <Card style={{ backgroundColor: '#606060'}}  className="h-100">
                 <Card.Img
                   className="image-card"
                   variant="top"
@@ -79,7 +79,7 @@ function Catalogo({ rol }) {
                   onClick={() => handleMostrarVistaDetallada(producto)}
                 />
                 <Card.Body>
-                  <Card.Title>{producto.nombre_producto}</Card.Title>
+                  <Card.Title style={{ color: '#ffff' }} >{producto.nombre_producto}</Card.Title>
                   <Card.Text className="text-center" style={{ fontSize: '20px' }}>
                     <Badge> C${producto.precio_venta}</Badge>
                     <hr className="my-1 mx-auto" style={{ width: '70%' }} />
