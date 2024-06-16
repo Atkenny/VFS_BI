@@ -10,8 +10,8 @@ app.use(express.json({ limit: '50mb' }));
 
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'KennyTellez',  // Asegúrate de que estos detalles sean correctos
-  password: 'incorrecto',  // Cambia esto por tu contraseña real
+  user: 'root',  // Asegúrate de que estos detalles sean correctos
+  password: '@kekodroid',  // Cambia esto por tu contraseña real
   database: 'database_vfs'
 });
 

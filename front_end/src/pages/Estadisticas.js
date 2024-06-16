@@ -557,24 +557,25 @@ function Estadisticas({ rol }) {
       .then((response) => response.json())
       .then((cantidadproducto) => {
         console.log("Productos por Categoria:", cantidadproducto);
-  
+
         const doc = new jsPDF();
         doc.text("Reporte Productos por Categoria", 20, 10);
-  
+
         const headers = ["Categoria", "Cantidad de Producto"];
         const data = cantidadproducto.map((cantidadesproducto) => [
           cantidadesproducto.nombre_categoria,
           cantidadesproducto.CantidadProductos
         ]);
-  
+
         try {
           doc.autoTable({
             startY: 20,
             head: [headers],
             body: data,
-            theme: "striped"
+            theme: "striped",
+            margin: { top: 15 },
           });
-  
+
           doc.save("productosporcategoria.pdf");
           console.log("Documento PDF generado y descargado.");
         } catch (error) {
@@ -583,7 +584,7 @@ function Estadisticas({ rol }) {
       })
       .catch((error) => console.error("Error al obtener el stock:", error));
   };
-  
+
   const handleDownloadPDF = (canvasId) => {
     const captureElement = document.getElementById(canvasId);
 
@@ -600,21 +601,19 @@ function Estadisticas({ rol }) {
       );
     }
   };
-  
-  
 
   return (
     <>
       <Header rol={rol} />
-      <Container className="espaciado" fluid>
+      <Container style={{ backgroundColor: '#303030', minHeight: '100vh', paddingTop:'70px', marginTop:'0px' }} className="espaciado" fluid>
         <Row>
           <Col className="title">
-            <h1>Estadísticas de Productos</h1>
+            <h1 style={{ color: '#ffff'}} >Estadísticas de Productos</h1>
           </Col>
         </Row>
 
-        <div>
-        <Row className="mt-4">
+        <div >
+          <Row className="mt-4">
             <Col md={6}>
               <Card>
                 <Card.Header>Productos por Categoría</Card.Header>
@@ -636,7 +635,6 @@ function Estadisticas({ rol }) {
                 </Row>
               </Card>
             </Col>
-
 
             <Col md={6}>
               <Card>

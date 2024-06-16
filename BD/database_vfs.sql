@@ -217,8 +217,8 @@ ALTER TABLE ListaDetalle ADD CONSTRAINT FK_ListaDetalle_Producto FOREIGN KEY (id
 ALTER TABLE ListaDeseos ADD CONSTRAINT FK_ListaDeseos_Cliente FOREIGN KEY (id_cliente) REFERENCES Cliente (id_cliente);
  
 ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '@kekodroid';
-ALTER USER 'KennyTellez'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'incorrecto';
-ALTER USER 'GiselaPaola'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'correcto';
+-- ALTER USER 'KennyTellez'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'incorrecto';
+-- ALTER USER 'GiselaPaola'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'correcto';
 
-GRANT PROCESS ON *.* TO 'KennyTellez';
-SHOW GRANTS FOR 'KennyTellez'@'localhost';
+-- GRANT PROCESS ON *.* TO 'KennyTellez';
+-- SHOW GRANTS FOR 'KennyTellez'@'localhost';
