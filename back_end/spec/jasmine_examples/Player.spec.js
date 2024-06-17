@@ -2,11 +2,13 @@
 describe('Player', function() {
   const Player = require('../../lib/jasmine_examples/Player');
   const Song = require('../../lib/jasmine_examples/Song');
-
   var player;
   var song;
 
+  const result = "Hola";
+
   beforeEach(function() {
+
     player = new Player();
     song = new Song();
   });
@@ -30,6 +32,12 @@ describe('Player', function() {
 
       // demonstrates use of 'not' with a custom matcher
       expect(player).not.toBePlaying(song);
+    });
+
+    it('validate custom function', function() {
+      const resultModifying = "Hola";
+
+      expect(result).toEqual(resultModifying);
     });
 
     it('should be possible to resume', function() {
