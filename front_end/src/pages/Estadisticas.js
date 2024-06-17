@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
+import emailjs from "emailjs-com";
 import {
   ButtonGroup,
   Button,
@@ -29,6 +30,40 @@ function Estadisticas({ rol }) {
     const numeroFormateado = Number(numero).toFixed(2);
     return numeroFormateado.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+
+  const formatearProductosporCategoria = (productoporcategoria) => {
+    return productoporcategoria
+      .map((categoria) => {
+        return `Categoria: ${categoria.nombre_categoria}\nproducto: ${categoria.CantidadProductos}`;
+      })
+      .join("\n\n");
+  };
+
+  const enviarCorreo = () => {
+    // Formateo de datos
+    const productoscategiaporFormateadas = formatearProductosporCategoria(
+      productosPorCategoria
+    );
+
+    // Datos de ejemplo (reemplaza con tus datos reales)
+    const data = {
+      to_name: "Kenny",
+      user_email: "tellezkenny08@gmail.com",
+      message: productoscategiaporFormateadas,
+    };
+
+    // Envía el correo utilizando EmailJS
+    emailjs
+      .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+      .then((response) => {
+        alert("Correo enviado.");
+        console.log("Correo enviado.", response);
+      })
+      .catch((error) => {
+        alert("Error al enviar el correo.");
+        console.error("Error al enviar el correo:", error);
+      });
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/crud/read_producto")
@@ -564,7 +599,7 @@ function Estadisticas({ rol }) {
         const headers = ["Categoria", "Cantidad de Producto"];
         const data = cantidadproducto.map((cantidadesproducto) => [
           cantidadesproducto.nombre_categoria,
-          cantidadesproducto.CantidadProductos
+          cantidadesproducto.CantidadProductos,
         ]);
 
         try {
@@ -605,14 +640,23 @@ function Estadisticas({ rol }) {
   return (
     <>
       <Header rol={rol} />
-      <Container style={{ backgroundColor: '#303030', minHeight: '100vh', paddingTop:'70px', marginTop:'0px' }} className="espaciado" fluid>
+      <Container
+        style={{
+          backgroundColor: "#303030",
+          minHeight: "100vh",
+          paddingTop: "70px",
+          marginTop: "0px",
+        }}
+        className="espaciado"
+        fluid
+      >
         <Row>
           <Col className="title">
-            <h1 style={{ color: '#ffff'}} >Estadísticas de Productos</h1>
+            <h1 style={{ color: "#ffff" }}>Estadísticas de Productos</h1>
           </Col>
         </Row>
 
-        <div >
+        <div>
           <Row className="mt-4">
             <Col md={6}>
               <Card>
@@ -628,9 +672,13 @@ function Estadisticas({ rol }) {
                     >
                       Descargar Grafico
                     </Button>
-                    <Button onClick={generarReporteProductosporCategoria}>
+                    <Button className="botongraf" onClick={generarReporteProductosporCategoria}>
                       Descargar Listado
                     </Button>
+                      <Button
+                        onClick={enviarCorreo}
+                      > Enviar por Correo
+                      </Button>
                   </Col>
                 </Row>
               </Card>
