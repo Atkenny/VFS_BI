@@ -10,6 +10,7 @@ import {
   Container,
 } from "react-bootstrap";
 import jsPDF from "jspdf";
+import "jspdf-autotable";
 import Chart from "chart.js/auto";
 import "../styles/App.css";
 import html2canvas from "html2canvas";
@@ -31,6 +32,7 @@ function Estadisticas({ rol }) {
     return numeroFormateado.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+//CORREO DEL GRAFICO PRODUCTOS POR CATEGORIA
   const formatearProductosporCategoria = (productoporcategoria) => {
     return productoporcategoria
       .map((categoria) => {
@@ -47,8 +49,8 @@ function Estadisticas({ rol }) {
 
     // Datos de ejemplo (reemplaza con tus datos reales)
     const data = {
-      to_name: "Kenny",
-      user_email: "tellezkenny08@gmail.com",
+      to_name: "Oneyker Galeano",
+      user_email: "oneygaleano21@gmail.com",
       message: productoscategiaporFormateadas,
     };
 
@@ -64,6 +66,44 @@ function Estadisticas({ rol }) {
         console.error("Error al enviar el correo:", error);
       });
   };
+
+//CORREO DEL GRAFICO TOP 5 PRODUCTOS
+
+const formatearTop5Productos = (productoporcategoria) => {
+  return productoporcategoria
+    .map((categoria) => {
+      return `Categoria: ${categoria.nombre_categoria}\nproducto: ${categoria.CantidadProductos}`;
+    })
+    .join("\n\n");
+};
+
+const enviarCorreo2 = () => {
+  // Formateo de datos
+  const productoscategiaporFormateadas = formatearProductosporCategoria(
+    productosPorCategoria
+  );
+
+  // Datos de ejemplo (reemplaza con tus datos reales)
+  const data = {
+    to_name: "Kenny",
+    user_email: "tellezkenny08@gmail.com",
+    message: productoscategiaporFormateadas,
+  };
+
+  // Envía el correo utilizando EmailJS
+  emailjs
+    .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+    .then((response) => {
+      alert("Correo enviado.");
+      console.log("Correo enviado.", response);
+    })
+    .catch((error) => {
+      alert("Error al enviar el correo.");
+      console.error("Error al enviar el correo:", error);
+    });
+};
+
+
 
   useEffect(() => {
     fetch("http://localhost:5000/crud/read_producto")
@@ -587,38 +627,38 @@ function Estadisticas({ rol }) {
     }
   }, [comprasFisicaOnline]);
 
-  const generarReporteProductosporCategoria = () => {
-    fetch("http://localhost:5000/crud/ProductosPorCategoria")
-      .then((response) => response.json())
-      .then((cantidadproducto) => {
-        console.log("Productos por Categoria:", cantidadproducto);
+const generarReporteProductosporCategoria = () => {
+  fetch("http://localhost:5000/crud/ProductosPorCategoria")
+    .then((response) => response.json())
+    .then((cantidadproducto) => {
+      console.log("Productos por Categoria:", cantidadproducto);
 
-        const doc = new jsPDF();
-        doc.text("Reporte Productos por Categoria", 20, 10);
+      const doc = new jsPDF();
+      doc.text("Reporte Productos por Categoria", 20, 10);
 
-        const headers = ["Categoria", "Cantidad de Producto"];
-        const data = cantidadproducto.map((cantidadesproducto) => [
-          cantidadesproducto.nombre_categoria,
-          cantidadesproducto.CantidadProductos,
-        ]);
+      const headers = [["Categoria", "Cantidad de Producto"]];
+      const data = cantidadproducto.map((cantidadesproducto) => [
+        cantidadesproducto.nombre_categoria,
+        cantidadesproducto.CantidadProductos,
+      ]);
 
-        try {
-          doc.autoTable({
-            startY: 20,
-            head: [headers],
-            body: data,
-            theme: "striped",
-            margin: { top: 15 },
-          });
+      try {
+        doc.autoTable({
+          startY: 20,
+          head: headers,
+          body: data,
+          theme: "striped",
+          margin: { top: 15 },
+        });
 
-          doc.save("productosporcategoria.pdf");
-          console.log("Documento PDF generado y descargado.");
-        } catch (error) {
-          console.error("Error al generar el PDF con autoTable:", error);
-        }
-      })
-      .catch((error) => console.error("Error al obtener el stock:", error));
-  };
+        doc.save("productosporcategoria.pdf");
+        console.log("Documento PDF generado y descargado.");
+      } catch (error) {
+        console.error("Error al generar el PDF con autoTable:", error);
+      }
+    })
+    .catch((error) => console.error("Error al obtener el stock:", error));
+};
 
   const handleDownloadPDF = (canvasId) => {
     const captureElement = document.getElementById(canvasId);
