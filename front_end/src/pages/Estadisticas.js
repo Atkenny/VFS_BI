@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import emailjs from "emailjs-com";
+import * as XLSX from "xlsx";
+import { FaFileExcel } from "react-icons/fa6";
+import { FaFileImage } from "react-icons/fa6";
+import { FaFileLines } from "react-icons/fa6";
+import { MdAttachEmail } from "react-icons/md";
 import {
   ButtonGroup,
   Button,
@@ -27,12 +32,13 @@ function Estadisticas({ rol }) {
   const [gananciaPorGenero, setGananciaPorGenero] = useState([]);
   const [generoClienteCompras, setGeneroClienteCompras] = useState([]);
   const [comprasFisicaOnline, setComprasFisicaOnline] = useState([]);
+
   function formatearNumeroConComas(numero) {
     const numeroFormateado = Number(numero).toFixed(2);
     return numeroFormateado.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-//CORREO DEL GRAFICO PRODUCTOS POR CATEGORIA
+  //CORREO DEL GRAFICO PRODUCTOS POR CATEGORIA
   const formatearProductosporCategoria = (productoporcategoria) => {
     return productoporcategoria
       .map((categoria) => {
@@ -49,8 +55,11 @@ function Estadisticas({ rol }) {
 
     // Datos de ejemplo (reemplaza con tus datos reales)
     const data = {
-      to_name: "Oneyker Galeano",
-      user_email: "oneygaleano21@gmail.com",
+      //  to_name: "Oneyker Galeano",
+      to_name: "Kenny Tellez",
+      //  user_email: "oneygaleano21@gmail.com",
+      user_email: "tellezkenny08@gmail.com",
+      descripcion: "Top 5 categorías con la mayor cantidad de productos",
       message: productoscategiaporFormateadas,
     };
 
@@ -67,43 +76,350 @@ function Estadisticas({ rol }) {
       });
   };
 
-//CORREO DEL GRAFICO TOP 5 PRODUCTOS
+  const exportarAExcel = () => {
+    // Convertir los datos JSON a una hoja de trabajo de Excel
+    const worksheet = XLSX.utils.json_to_sheet(productosPorCategoria);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Productos por categoria"
+    );
 
-const formatearTop5Productos = (productoporcategoria) => {
-  return productoporcategoria
-    .map((categoria) => {
-      return `Categoria: ${categoria.nombre_categoria}\nproducto: ${categoria.CantidadProductos}`;
-    })
-    .join("\n\n");
-};
-
-const enviarCorreo2 = () => {
-  // Formateo de datos
-  const productoscategiaporFormateadas = formatearProductosporCategoria(
-    productosPorCategoria
-  );
-
-  // Datos de ejemplo (reemplaza con tus datos reales)
-  const data = {
-    to_name: "Kenny",
-    user_email: "tellezkenny08@gmail.com",
-    message: productoscategiaporFormateadas,
+    // Generar y descargar el archivo Excel
+    XLSX.writeFile(workbook, "productosporcategoria.xlsx");
   };
 
-  // Envía el correo utilizando EmailJS
-  emailjs
-    .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
-    .then((response) => {
-      alert("Correo enviado.");
-      console.log("Correo enviado.", response);
-    })
-    .catch((error) => {
-      alert("Error al enviar el correo.");
-      console.error("Error al enviar el correo:", error);
-    });
-};
+  //CORREO DEL GRAFICO TOP 5 CLIENTES
+  const formatearTop5Clientes = (top5cliente) => {
+    return top5cliente
+      .map((hechos_ventas) => {
+        return `Nombres y apellidos: ${hechos_ventas.nombre_cliente}
+        \n Cantidad de compras: ${hechos_ventas.total_compras}`;
+      })
+      .join("\n\n");
+  };
 
+  const enviarCorreo2 = () => {
+    // Formateo de datos
+    const top5clientesFormateados = formatearTop5Clientes(top5Clientes);
 
+    // Datos de ejemplo (reemplaza con tus datos reales)
+    const data = {
+      to_name: "Kenny",
+      user_email: "tellezkenny08@gmail.com",
+      message: top5clientesFormateados,
+    };
+
+    // Envía el correo utilizando EmailJS
+    emailjs
+      .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+      .then((response) => {
+        alert("Correo enviado.");
+        console.log("Correo enviado.", response);
+      })
+      .catch((error) => {
+        alert("Error al enviar el correo.");
+        console.error("Error al enviar el correo:", error);
+      });
+  };
+
+  const exportarAExcel2 = () => {
+    // Convertir los datos JSON a una hoja de trabajo de Excel
+    const worksheet = XLSX.utils.json_to_sheet(top5Clientes);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Top 5 clientes");
+
+    // Generar y descargar el archivo Excel
+    XLSX.writeFile(workbook, "top5clientes.xlsx");
+  };
+
+  //CORREO DEL GRAFICO INVERSION Y BENEFICIO POR MES
+  const formatearInversionYBenefico = (InversionYBeneficio) => {
+    return InversionYBeneficio.map((hechos_ventas) => {
+      return `Nombre producto: ${hechos_ventas.nombre_producto}
+      \n Monto de inversion: ${hechos_ventas.monto_inversion}
+      \n Monto de beneficio: ${hechos_ventas.monto_beneficio}
+      \n Fecha: ${hechos_ventas.mes} ${hechos_ventas.anio}`;
+    }).join("\n\n");
+  };
+
+  const enviarCorreo3 = () => {
+    // Formateo de datos
+    const inversionybeneficioFormateados = formatearInversionYBenefico(
+      inversionYBeneficioMes
+    );
+
+    // Datos de ejemplo (reemplaza con tus datos reales)
+    const data = {
+      to_name: "Kenny",
+      user_email: "tellezkenny08@gmail.com",
+      message: inversionybeneficioFormateados,
+    };
+
+    // Envía el correo utilizando EmailJS
+    emailjs
+      .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+      .then((response) => {
+        alert("Correo enviado.");
+        console.log("Correo enviado.", response);
+      })
+      .catch((error) => {
+        alert("Error al enviar el correo.");
+        console.error("Error al enviar el correo:", error);
+      });
+  };
+
+  const exportarAExcel3 = () => {
+    // Convertir los datos JSON a una hoja de trabajo de Excel
+    const worksheet = XLSX.utils.json_to_sheet(inversionYBeneficioMes);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Inversion y beneficio al mes"
+    );
+
+    // Generar y descargar el archivo Excel
+    XLSX.writeFile(workbook, "inversionYBeneficioMes.xlsx");
+  };
+
+  //CORREO DEL GRAFICO GANACIA POR VENTA
+  const formatearGananciaPorventa = (GananciaPorVenta) => {
+    return GananciaPorVenta.map((hechos_ventas) => {
+      return `Total ganacias: ${hechos_ventas.total_ganancias}
+      \n Total cantidad ventas: ${hechos_ventas.total_cantidad_ventas}
+      \n Fecha: ${hechos_ventas.mes} ${hechos_ventas.anio}`;
+    }).join("\n\n");
+  };
+
+  const enviarCorreo4 = () => {
+    // Formateo de datos
+    const gananciaporventaFormateados =
+      formatearGananciaPorventa(gananciasPorVenta);
+
+    // Datos de ejemplo (reemplaza con tus datos reales)
+    const data = {
+      to_name: "Kenny",
+      user_email: "tellezkenny08@gmail.com",
+      message: gananciaporventaFormateados,
+    };
+
+    // Envía el correo utilizando EmailJS
+    emailjs
+      .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+      .then((response) => {
+        alert("Correo enviado.");
+        console.log("Correo enviado.", response);
+      })
+      .catch((error) => {
+        alert("Error al enviar el correo.");
+        console.error("Error al enviar el correo:", error);
+      });
+  };
+
+  const exportarAExcel4 = () => {
+    // Convertir los datos JSON a una hoja de trabajo de Excel
+    const worksheet = XLSX.utils.json_to_sheet(gananciasPorVenta);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Ganacias por venta");
+
+    // Generar y descargar el archivo Excel
+    XLSX.writeFile(workbook, "gananciasPorVenta.xlsx");
+  };
+
+  //CORREO DEL GRAFICO TOTAL DE INVERSION Y BENEFICIO
+  const formatearTotalInversionyBeneficio = (TotalInversionyBeneficio) => {
+    return TotalInversionyBeneficio.map((dim_producto) => {
+      return `Total inversion: ${dim_producto.total_inversion}
+        \n Total beneficio: ${dim_producto.total_beneficio}`;
+    }).join("\n\n");
+  };
+
+  const enviarCorreo5 = () => {
+    // Formateo de datos
+    const totalinversionybeneficioFormateados =
+      formatearTotalInversionyBeneficio(totalInversionBeneficio);
+
+    // Datos de ejemplo (reemplaza con tus datos reales)
+    const data = {
+      to_name: "Kenny",
+      user_email: "tellezkenny08@gmail.com",
+      message: totalinversionybeneficioFormateados,
+    };
+
+    // Envía el correo utilizando EmailJS
+    emailjs
+      .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+      .then((response) => {
+        alert("Correo enviado.");
+        console.log("Correo enviado.", response);
+      })
+      .catch((error) => {
+        alert("Error al enviar el correo.");
+        console.error("Error al enviar el correo:", error);
+      });
+  };
+
+  const exportarAExcel5 = () => {
+    // Convertir los datos JSON a una hoja de trabajo de Excel
+    const worksheet = XLSX.utils.json_to_sheet(totalInversionBeneficio);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Total inversion y beneficio"
+    );
+
+    // Generar y descargar el archivo Excel
+    XLSX.writeFile(workbook, "totalInversionBeneficio.xlsx");
+  };
+
+  //CORREO DEL GRAFICO TOTAL GANANCIA POR GENERO DE PRODUCTO
+  const formatearGananciaPorGenero = (GananciaPorGenero) => {
+    return GananciaPorGenero.map((hechos_ventas) => {
+      return `Total ganancia: ${hechos_ventas.cantidad_compras}
+        \n Monto ganancia: ${hechos_ventas.monto_ganancia}
+        \n Fecha: ${hechos_ventas.mes} ${hechos_ventas.anio}`;
+    }).join("\n\n");
+  };
+
+  const enviarCorreo6 = () => {
+    // Formateo de datos
+    const gananciaporgeneroFormateados =
+      formatearGananciaPorGenero(gananciaPorGenero);
+
+    // Datos de ejemplo (reemplaza con tus datos reales)
+    const data = {
+      to_name: "Kenny",
+      user_email: "tellezkenny08@gmail.com",
+      message: gananciaporgeneroFormateados,
+    };
+
+    // Envía el correo utilizando EmailJS
+    emailjs
+      .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+      .then((response) => {
+        alert("Correo enviado.");
+        console.log("Correo enviado.", response);
+      })
+      .catch((error) => {
+        alert("Error al enviar el correo.");
+        console.error("Error al enviar el correo:", error);
+      });
+  };
+
+  const exportarAExcel6 = () => {
+    // Convertir los datos JSON a una hoja de trabajo de Excel
+    const worksheet = XLSX.utils.json_to_sheet(gananciaPorGenero);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Ganancia por genero de producto"
+    );
+
+    // Generar y descargar el archivo Excel
+    XLSX.writeFile(workbook, "gananciaPorGenero.xlsx");
+  };
+
+  //CORREO DEL GRAFICO COMPRAS GENERO CLIENTE
+  const formatearCompraGeneroCliente = (generoCliente) => {
+    return generoCliente
+      .map((hechos_ventas) => {
+        return `Genero cliente: ${hechos_ventas.genero_cliente}
+        \n Total compras: ${hechos_ventas.total_compras}
+        \n Monto total: ${hechos_ventas.monto_total_compras}`;
+      })
+      .join("\n\n");
+  };
+
+  const enviarCorreo7 = () => {
+    // Formateo de datos
+    const comprasgeneroclienteFormateados =
+      formatearCompraGeneroCliente(generoClienteCompras);
+
+    // Datos de ejemplo (reemplaza con tus datos reales)
+    const data = {
+      to_name: "Kenny",
+      user_email: "tellezkenny08@gmail.com",
+      message: comprasgeneroclienteFormateados,
+    };
+
+    // Envía el correo utilizando EmailJS
+    emailjs
+      .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+      .then((response) => {
+        alert("Correo enviado.");
+        console.log("Correo enviado.", response);
+      })
+      .catch((error) => {
+        alert("Error al enviar el correo.");
+        console.error("Error al enviar el correo:", error);
+      });
+  };
+
+  const exportarAExcel7 = () => {
+    // Convertir los datos JSON a una hoja de trabajo de Excel
+    const worksheet = XLSX.utils.json_to_sheet(generoClienteCompras);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Compras por genero de cliente"
+    );
+
+    // Generar y descargar el archivo Excel
+    XLSX.writeFile(workbook, "generoClienteCompras.xlsx");
+  };
+
+  //CORREO DEL GRAFICO COMPRAS GENERO CLIENTE
+  const formatearComprasFisicaOnline = (FisicaOnline) => {
+    return FisicaOnline.map((hechos_ventas) => {
+      return `Tipo compra: ${hechos_ventas.tipo_entrega}
+        \n Cantidad: ${hechos_ventas.cantidad_comprada}
+        \n Monto total: ${hechos_ventas.monto_total}`;
+    }).join("\n\n");
+  };
+
+  const enviarCorreo8 = () => {
+    // Formateo de datos
+    const comprasfisicaonlineFormateados =
+      formatearComprasFisicaOnline(comprasFisicaOnline);
+
+    // Datos de ejemplo (reemplaza con tus datos reales)
+    const data = {
+      to_name: "Kenny",
+      user_email: "tellezkenny08@gmail.com",
+      message: comprasfisicaonlineFormateados,
+    };
+
+    // Envía el correo utilizando EmailJS
+    emailjs
+      .send("service_yokssdd", "template_zv6swzl", data, "K0tn4YYqxqXzGgXDc")
+      .then((response) => {
+        alert("Correo enviado.");
+        console.log("Correo enviado.", response);
+      })
+      .catch((error) => {
+        alert("Error al enviar el correo.");
+        console.error("Error al enviar el correo:", error);
+      });
+  };
+
+  const exportarAExcel8 = () => {
+    // Convertir los datos JSON a una hoja de trabajo de Excel
+    const worksheet = XLSX.utils.json_to_sheet(comprasFisicaOnline);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "Compras en fisico y online"
+    );
+
+    // Generar y descargar el archivo Excel
+    XLSX.writeFile(workbook, "comprasFisicaOnline.xlsx");
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/crud/read_producto")
@@ -627,38 +943,284 @@ const enviarCorreo2 = () => {
     }
   }, [comprasFisicaOnline]);
 
-const generarReporteProductosporCategoria = () => {
-  fetch("http://localhost:5000/crud/ProductosPorCategoria")
-    .then((response) => response.json())
-    .then((cantidadproducto) => {
-      console.log("Productos por Categoria:", cantidadproducto);
+  const generarReporteProductosporCategoria = () => {
+    fetch("http://localhost:5000/crud/ProductosPorCategoria")
+      .then((response) => response.json())
+      .then((cantidadproducto) => {
+        console.log("Productos por Categoria:", cantidadproducto);
 
-      const doc = new jsPDF();
-      doc.text("Reporte Productos por Categoria", 20, 10);
+        const doc = new jsPDF();
+        doc.text("Reporte Productos por Categoria", 20, 10);
 
-      const headers = [["Categoria", "Cantidad de Producto"]];
-      const data = cantidadproducto.map((cantidadesproducto) => [
-        cantidadesproducto.nombre_categoria,
-        cantidadesproducto.CantidadProductos,
-      ]);
+        const headers = [["Categoria", "Cantidad de Producto"]];
+        const data = cantidadproducto.map((cantidadesproducto) => [
+          cantidadesproducto.nombre_categoria,
+          cantidadesproducto.CantidadProductos,
+        ]);
 
-      try {
-        doc.autoTable({
-          startY: 20,
-          head: headers,
-          body: data,
-          theme: "striped",
-          margin: { top: 15 },
-        });
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: headers,
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
 
-        doc.save("productosporcategoria.pdf");
-        console.log("Documento PDF generado y descargado.");
-      } catch (error) {
-        console.error("Error al generar el PDF con autoTable:", error);
-      }
-    })
-    .catch((error) => console.error("Error al obtener el stock:", error));
-};
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
+
+  const generarReporteTop5Clientes = () => {
+    fetch("http://localhost:5000/crud2/top5Clientes")
+      .then((response) => response.json())
+      .then((hechos_ventas) => {
+        console.log("Top 5 clientes:", hechos_ventas);
+
+        const doc = new jsPDF();
+        doc.text("Top 5 clientes con mas compras", 20, 10);
+
+        const headers = [["Nombres y apellidos", "Cantidad de compras"]];
+        const data = hechos_ventas.map((nombre_cliente) => [
+          nombre_cliente.nombre_cliente,
+          nombre_cliente.total_compras,
+        ]);
+
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: headers,
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
+
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
+
+  const generarReporteInversionYBeneficioMes = () => {
+    fetch("http://localhost:5000/crud2/InversionYBeneficioMes")
+      .then((response) => response.json())
+      .then((hechos_ventas) => {
+        console.log("Inversion y benefico al mes:", hechos_ventas);
+
+        const doc = new jsPDF();
+        doc.text("Inversion y benefico al mes", 20, 10);
+
+        const headers = [
+          ["Nombres producto", "Inversion", "Beneficio", "Mes", "Año"],
+        ];
+        const data = hechos_ventas.map((nombre_producto) => [
+          nombre_producto.nombre_producto,
+          nombre_producto.monto_inversion,
+          nombre_producto.monto_beneficio,
+          nombre_producto.mes,
+          nombre_producto.anio,
+        ]);
+
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: headers,
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
+
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
+
+  const generarReporteGananciaPorventa = () => {
+    fetch("http://localhost:5000/crud2/GananciasPorVenta")
+      .then((response) => response.json())
+      .then((hechos_ventas) => {
+        console.log("Ganancia por venta:", hechos_ventas);
+
+        const doc = new jsPDF();
+        doc.text("Ganacia por venta", 20, 10);
+
+        const headers = [
+          ["Total ganancia", "Total cantidad de ventas", "Mes", "Año"],
+        ];
+        const data = hechos_ventas.map((ganancias) => [
+          ganancias.total_ganancias,
+          ganancias.total_cantidad_ventas,
+          ganancias.mes,
+          ganancias.anio,
+        ]);
+
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: headers,
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
+
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
+
+  const generarReporteTotalInversionBeneficio = () => {
+    fetch("http://localhost:5000/crud2/Total_InvercionBeneficio")
+      .then((response) => response.json())
+      .then((dim_producto) => {
+        console.log("Total de inversion y beneficio:", dim_producto);
+
+        const doc = new jsPDF();
+        doc.text("Total de inversion y beneficio", 20, 10);
+
+        const headers = [["Total inversion", "Total beneficio"]];
+        const data = dim_producto.map((totalIB) => [
+          totalIB.total_inversion,
+          totalIB.total_beneficio,
+        ]);
+
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: headers,
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
+
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
+
+  const generarReporteGananciaPorGenero = () => {
+    fetch("http://localhost:5000/crud2/GananciaPorGenero")
+      .then((response) => response.json())
+      .then((hechos_ventas) => {
+        console.log("Total de ganancia por genero de producto:", hechos_ventas);
+
+        const doc = new jsPDF();
+        doc.text("Total de ganancia por genero de producto", 20, 10);
+
+        const headers = [
+          ["Fecha", "Genero", "Cantidad compras", "Monto ganancia"],
+        ];
+        const data = hechos_ventas.map((totalGP) => [
+          totalGP.mes + "/" + totalGP.anio,
+          totalGP.genero_producto,
+          totalGP.cantidad_compras,
+          totalGP.monto_ganancia,
+        ]);
+
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: headers,
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
+
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
+
+  const generarReporteGeneroClienteCompras = () => {
+    fetch("http://localhost:5000/crud2/GeneroClienteCompras")
+      .then((response) => response.json())
+      .then((hechos_ventas) => {
+        console.log("Compras por genero de cliente:", hechos_ventas);
+
+        const doc = new jsPDF();
+        doc.text("Compras por genero de cliente", 20, 10);
+
+        const headers = [["Genero cliente", "Total compras", "Monto total"]];
+        const data = hechos_ventas.map((gananciaGC) => [
+          gananciaGC.genero_cliente,
+          gananciaGC.total_compras,
+          gananciaGC.monto_total_compras,
+        ]);
+
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: headers,
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
+
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
+
+  const generarReporteComprasFisicaOnline = () => {
+    fetch("http://localhost:5000/crud2/Compras_FisicaOnline")
+      .then((response) => response.json())
+      .then((hechos_ventas) => {
+        console.log("Compras en tienda y online:", hechos_ventas);
+
+        const doc = new jsPDF();
+        doc.text("Compras en tienda y online", 20, 10);
+
+        const headers = [["Tipo compra", "Cantidad", "Monto total"]];
+        const data = hechos_ventas.map((gananciaTO) => [
+          gananciaTO.tipo_entrega,
+          gananciaTO.cantidad_comprada,
+          gananciaTO.monto_total,
+        ]);
+
+        try {
+          doc.autoTable({
+            startY: 20,
+            head: headers,
+            body: data,
+            theme: "striped",
+            margin: { top: 15 },
+          });
+
+          doc.save("productosporcategoria.pdf");
+          console.log("Documento PDF generado y descargado.");
+        } catch (error) {
+          console.error("Error al generar el PDF con autoTable:", error);
+        }
+      })
+      .catch((error) => console.error("Error al obtener el stock:", error));
+  };
 
   const handleDownloadPDF = (canvasId) => {
     const captureElement = document.getElementById(canvasId);
@@ -704,21 +1266,27 @@ const generarReporteProductosporCategoria = () => {
                 <Card.Body>
                   <canvas id="myCategories" width="100%" height="100%"></canvas>
                 </Card.Body>
-                <Row className="mt-4">
+                <Row className= "mt-4">
                   <Col className="text-center">
                     <Button
                       className="botongraf"
                       onClick={() => handleDownloadPDF("myCategories")}
                     >
-                      Descargar Grafico
+                      <FaFileImage style={{ color: "white" }} />
                     </Button>
-                    <Button className="botongraf" onClick={generarReporteProductosporCategoria}>
-                      Descargar Listado
+                    <Button
+                      className="botongraf"
+                      onClick={generarReporteProductosporCategoria}
+                    >
+                      <FaFileLines style={{ color: "white" }} />
                     </Button>
-                      <Button
-                        onClick={enviarCorreo}
-                      > Enviar por Correo
-                      </Button>
+                    <Button className="botongraf" onClick={enviarCorreo}>
+                      <MdAttachEmail style={{ color: "white" }} />
+                    </Button>
+                    <Button 
+                    onClick={exportarAExcel}>
+                      <FaFileExcel style={{ color: "white" }} />
+                    </Button>
                   </Col>
                 </Row>
               </Card>
@@ -736,12 +1304,19 @@ const generarReporteProductosporCategoria = () => {
                       className="botongraf"
                       onClick={() => handleDownloadPDF("top5Clientes")}
                     >
-                      Descargar Grafico
+                      <FaFileImage style={{ color: "white" }} />
                     </Button>
                     <Button
-                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                      className="botongraf"
+                      onClick={generarReporteTop5Clientes}
                     >
-                      Descargar Listado
+                      <FaFileLines style={{ color: "white" }} />
+                    </Button>
+                    <Button className="botongraf" onClick={enviarCorreo2}>
+                      <MdAttachEmail style={{ color: "white" }} />
+                    </Button>
+                    <Button onClick={exportarAExcel2}>
+                      <FaFileExcel style={{ color: "white" }} />
                     </Button>
                   </Col>
                 </Row>
@@ -768,12 +1343,19 @@ const generarReporteProductosporCategoria = () => {
                         handleDownloadPDF("inversionYBeneficioMes")
                       }
                     >
-                      Descargar Grafico
+                      <FaFileImage style={{ color: "white" }} />
                     </Button>
                     <Button
-                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                      className="botongraf"
+                      onClick={generarReporteInversionYBeneficioMes}
                     >
-                      Descargar Listado
+                      <FaFileLines style={{ color: "white" }} />
+                    </Button>
+                    <Button className="botongraf" onClick={enviarCorreo3}>
+                      <MdAttachEmail style={{ color: "white" }} />
+                    </Button>
+                    <Button onClick={exportarAExcel3}>
+                      <FaFileExcel style={{ color: "white" }} />
                     </Button>
                   </Col>
                 </Row>
@@ -796,12 +1378,19 @@ const generarReporteProductosporCategoria = () => {
                       className="botongraf"
                       onClick={() => handleDownloadPDF("gananciasPorVenta")}
                     >
-                      Descargar Grafico
+                      <FaFileImage style={{ color: "white" }} />
                     </Button>
                     <Button
-                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                      className="botongraf"
+                      onClick={generarReporteGananciaPorventa}
                     >
-                      Descargar Listado
+                      <FaFileLines style={{ color: "white" }} />
+                    </Button>
+                    <Button className="botongraf" onClick={enviarCorreo4}>
+                      <MdAttachEmail style={{ color: "white" }} />
+                    </Button>
+                    <Button onClick={exportarAExcel4}>
+                      <FaFileExcel style={{ color: "white" }} />
                     </Button>
                   </Col>
                 </Row>
@@ -828,12 +1417,19 @@ const generarReporteProductosporCategoria = () => {
                         handleDownloadPDF("totalInversionBeneficio")
                       }
                     >
-                      Descargar Grafico
+                      <FaFileImage style={{ color: "white" }} />
                     </Button>
                     <Button
-                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                      className="botongraf"
+                      onClick={generarReporteTotalInversionBeneficio}
                     >
-                      Descargar Listado
+                      <FaFileLines style={{ color: "white" }} />
+                    </Button>
+                    <Button className="botongraf" onClick={enviarCorreo5}>
+                      <MdAttachEmail style={{ color: "white" }} />
+                    </Button>
+                    <Button onClick={exportarAExcel5}>
+                      <FaFileExcel style={{ color: "white" }} />
                     </Button>
                   </Col>
                 </Row>
@@ -856,12 +1452,19 @@ const generarReporteProductosporCategoria = () => {
                       className="botongraf"
                       onClick={() => handleDownloadPDF("gananciaPorGenero")}
                     >
-                      Descargar Grafico
+                      <FaFileImage style={{ color: "white" }} />
                     </Button>
                     <Button
-                      onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                      className="botongraf"
+                      onClick={generarReporteGananciaPorGenero}
                     >
-                      Descargar Listado
+                      <FaFileLines style={{ color: "white" }} />
+                    </Button>
+                    <Button className="botongraf" onClick={enviarCorreo6}>
+                      <MdAttachEmail style={{ color: "white" }} />
+                    </Button>
+                    <Button onClick={exportarAExcel6}>
+                      <FaFileExcel style={{ color: "white" }} />
                     </Button>
                   </Col>
                 </Row>
@@ -887,12 +1490,19 @@ const generarReporteProductosporCategoria = () => {
                           handleDownloadPDF("generoClienteCompras")
                         }
                       >
-                        Descargar Grafico
+                        <FaFileImage style={{ color: "white" }} />
                       </Button>
                       <Button
-                        onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                        className="botongraf"
+                        onClick={generarReporteGeneroClienteCompras}
                       >
-                        Descargar Listado
+                        <FaFileLines style={{ color: "white" }} />
+                      </Button>
+                      <Button className="botongraf" onClick={enviarCorreo7}>
+                        <MdAttachEmail style={{ color: "white" }} />
+                      </Button>
+                      <Button onClick={exportarAExcel7}>
+                        <FaFileExcel style={{ color: "white" }} />
                       </Button>
                     </Col>
                   </Row>
@@ -915,12 +1525,21 @@ const generarReporteProductosporCategoria = () => {
                         className="botongraf"
                         onClick={() => handleDownloadPDF("comprasFisicaOnline")}
                       >
-                        Descargar Grafico
+                        <FaFileImage style={{ color: "white" }} />
                       </Button>
+
                       <Button
-                        onClick={() => handleDownloadPDF("comprasFisicaOnline")}
+                        className="botongraf"
+                        onClick={generarReporteComprasFisicaOnline}
                       >
-                        Descargar Listado
+                        <FaFileLines style={{ color: "white" }} />
+                      </Button>
+                      <Button className="botongraf" onClick={enviarCorreo8}>
+                        <MdAttachEmail style={{ color: "white" }} />
+                      </Button>
+
+                      <Button onClick={exportarAExcel8}>
+                        <FaFileExcel style={{ color: "white" }} />
                       </Button>
                     </Col>
                   </Row>
