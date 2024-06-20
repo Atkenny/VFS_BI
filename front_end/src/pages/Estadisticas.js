@@ -443,7 +443,7 @@ function Estadisticas({ rol }) {
     fetch("http://localhost:5000/crud2/top5Productos")
       .then((response) => response.json())
       .then((data) => setTop5Productos(data))
-      .catch((error) =>
+      .catch((error) => 
         console.error("Error al obtener los top 5 productos:", error)
       );
   }, []);
@@ -520,19 +520,22 @@ function Estadisticas({ rol }) {
   useEffect(() => {
     if (productosPorCategoria.length > 0) {
       const ctx = document.getElementById("myCategories");
-
-      const labels = productosPorCategoria.map(
+  
+      // Limitar a las primeras 5 categorías
+      const topCategorias = productosPorCategoria.slice(0, 5);
+  
+      const labels = topCategorias.map(
         (categoria) => categoria.nombre_categoria
       );
-      const data = productosPorCategoria.map(
+      const data = topCategorias.map(
         (categoria) => categoria.CantidadProductos
       );
-
+  
       const existingChart = Chart.getChart("myCategories");
       if (existingChart) {
         existingChart.destroy();
       }
-
+  
       new Chart(ctx, {
         type: "pie",
         data: {
@@ -576,6 +579,7 @@ function Estadisticas({ rol }) {
       });
     }
   }, [productosPorCategoria]);
+  
 
   useEffect(() => {
     if (top5Productos.length > 0) {
@@ -617,15 +621,18 @@ function Estadisticas({ rol }) {
   useEffect(() => {
     if (top5Clientes.length > 0) {
       const ctx = document.getElementById("top5Clientes");
-
-      const labels = top5Clientes.map((cliente) => cliente.nombre_cliente);
-      const data = top5Clientes.map((cliente) => cliente.total_compras);
-
+  
+      // Limitar a los primeros 5 clientes
+      const topClientes = top5Clientes.slice(0, 5);
+  
+      const labels = topClientes.map((cliente) => cliente.nombre_cliente);
+      const data = topClientes.map((cliente) => cliente.total_compras);
+  
       const existingChart = Chart.getChart("top5Clientes");
       if (existingChart) {
         existingChart.destroy();
       }
-
+  
       new Chart(ctx, {
         type: "bar",
         data: {
@@ -650,26 +657,26 @@ function Estadisticas({ rol }) {
       });
     }
   }, [top5Clientes]);
+  
 
   useEffect(() => {
     if (inversionYBeneficioMes.length > 0) {
       const ctx = document.getElementById("inversionYBeneficioMes");
-
-      const labels = inversionYBeneficioMes.map(
+  
+      // Limitar a los primeros 5 productos
+      const topProductos = inversionYBeneficioMes.slice(0, 5);
+  
+      const labels = topProductos.map(
         (item) => `${item.nombre_producto} - ${item.mes}/${item.anio}`
       );
-      const inversionData = inversionYBeneficioMes.map(
-        (item) => item.monto_inversion
-      );
-      const beneficioData = inversionYBeneficioMes.map(
-        (item) => item.monto_beneficio
-      );
-
+      const inversionData = topProductos.map((item) => item.monto_inversion);
+      const beneficioData = topProductos.map((item) => item.monto_beneficio);
+  
       const existingChart = Chart.getChart("inversionYBeneficioMes");
       if (existingChart) {
         existingChart.destroy();
       }
-
+  
       new Chart(ctx, {
         type: "line",
         data: {
@@ -701,6 +708,7 @@ function Estadisticas({ rol }) {
       });
     }
   }, [inversionYBeneficioMes]);
+  
 
   useEffect(() => {
     if (gananciasPorVenta.length > 0) {
@@ -1260,13 +1268,13 @@ function Estadisticas({ rol }) {
 
         <div>
           <Row className="mt-4">
-            <Col md={6}>
+            <Col md={4}>
               <Card>
                 <Card.Header>Productos por Categoría</Card.Header>
                 <Card.Body>
                   <canvas id="myCategories" width="100%" height="100%"></canvas>
                 </Card.Body>
-                <Row className= "mt-4">
+                <Row className= "mt-2">
                   <Col className="text-center">
                     <Button
                       className="botongraf"
@@ -1292,13 +1300,13 @@ function Estadisticas({ rol }) {
               </Card>
             </Col>
 
-            <Col md={6}>
+            <Col md={4}>
               <Card>
                 <Card.Header>Top 5 Clientes</Card.Header>
                 <Card.Body>
                   <canvas id="top5Clientes" width="100%" height="100%"></canvas>
                 </Card.Body>
-                <Row className="mt-4">
+                <Row className="mt-2">
                   <Col className="text-center">
                     <Button
                       className="botongraf"
@@ -1325,7 +1333,7 @@ function Estadisticas({ rol }) {
           </Row>
 
           <Row className="mt-4">
-            <Col md={6}>
+            <Col md={4}>
               <Card>
                 <Card.Header>Inversión y Beneficio por Mes</Card.Header>
                 <Card.Body>
@@ -1335,7 +1343,7 @@ function Estadisticas({ rol }) {
                     height="100%"
                   ></canvas>
                 </Card.Body>
-                <Row className="mt-4">
+                <Row className="mt-2">
                   <Col className="text-center">
                     <Button
                       className="botongraf"

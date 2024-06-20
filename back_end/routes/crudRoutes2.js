@@ -4,8 +4,6 @@ const router = express.Router();
 module.exports = (db) => {
 
 
-
-
   // Top 5 productos mas vendidos
   router.get('/top5Productos', (req, res) => {
     const sql = `
@@ -13,8 +11,7 @@ module.exports = (db) => {
       FROM hechos_ventas hv
       JOIN dim_producto dp ON hv.id_producto = dp.id_producto
       GROUP BY dp.nombre_producto
-      ORDER BY total_vendido DESC
-      LIMIT 5;
+      ORDER BY total_vendido DESC;
       `;
   
     // Ejecutar la consulta
@@ -39,8 +36,7 @@ module.exports = (db) => {
           FROM hechos_ventas hv
           JOIN dim_cliente dc ON hv.id_cliente = dc.id_cliente
           GROUP BY nombre_cliente
-          ORDER BY total_compras DESC
-          LIMIT 5;
+          ORDER BY total_compras DESC;
           `;
 
     // Ejecutar la consulta
@@ -70,8 +66,7 @@ module.exports = (db) => {
           JOIN dim_tiempo dt ON hv.id_tiempo = dt.id_tiempo
           WHERE dt.anio = YEAR(CURDATE())
           GROUP BY dp.nombre_producto, dt.anio, dt.mes
-          ORDER BY monto_beneficio DESC
-          LIMIT 5;
+          ORDER BY monto_beneficio DESC;
     `;
 
     // Ejecutar la consulta
