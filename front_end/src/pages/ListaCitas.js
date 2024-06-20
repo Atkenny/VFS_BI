@@ -162,9 +162,7 @@ function ListaCitas({ rol }) {
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th style={{ display: 'none' }}>IDCliente</th>
                                 <th>Cliente</th>
-                                <th style={{ display: 'none' }}>IDEmpleado</th>
                                 <th>Empleado</th>
                                 <th>Servicio</th>
                                 <th>Fecha</th>
@@ -180,9 +178,7 @@ function ListaCitas({ rol }) {
                             {filteredCitas.map((cita) => (
                                 <tr key={cita.id_cita}>
                                     <td>{cita.id_cita}</td>
-                                    <td style={{ display: 'none' }}>{cita.id_cliente}</td>
                                     <td>{cita.nombre1_cliente + ' ' + cita.apellido1_cliente}</td>
-                                    <td style={{ display: 'none' }}>{cita.id_empleado}</td>
                                     <td>{cita.nombre1_empleado + ' ' + cita.apellido1_empleado}</td>
                                     <td>{cita.tipo_servicio}</td>
                                     <td>{formatDateForInput(cita.fecha_cita)}</td>
