@@ -662,22 +662,21 @@ function Estadisticas({ rol }) {
   useEffect(() => {
     if (inversionYBeneficioMes.length > 0) {
       const ctx = document.getElementById("inversionYBeneficioMes");
-
-      const labels = inversionYBeneficioMes.map(
+  
+      // Limitar a los primeros 5 productos
+      const topProductos = inversionYBeneficioMes.slice(0, 5);
+  
+      const labels = topProductos.map(
         (item) => `${item.nombre_producto} - ${item.mes}/${item.anio}`
       );
-      const inversionData = inversionYBeneficioMes.map(
-        (item) => item.monto_inversion
-      );
-      const beneficioData = inversionYBeneficioMes.map(
-        (item) => item.monto_beneficio
-      );
-
+      const inversionData = topProductos.map((item) => item.monto_inversion);
+      const beneficioData = topProductos.map((item) => item.monto_beneficio);
+  
       const existingChart = Chart.getChart("inversionYBeneficioMes");
       if (existingChart) {
         existingChart.destroy();
       }
-
+  
       new Chart(ctx, {
         type: "line",
         data: {
@@ -709,6 +708,7 @@ function Estadisticas({ rol }) {
       });
     }
   }, [inversionYBeneficioMes]);
+  
 
   useEffect(() => {
     if (gananciasPorVenta.length > 0) {
@@ -1268,13 +1268,13 @@ function Estadisticas({ rol }) {
 
         <div>
           <Row className="mt-4">
-            <Col md={6}>
+            <Col md={4}>
               <Card>
                 <Card.Header>Productos por Categoría</Card.Header>
                 <Card.Body>
                   <canvas id="myCategories" width="100%" height="100%"></canvas>
                 </Card.Body>
-                <Row className= "mt-4">
+                <Row className= "mt-2">
                   <Col className="text-center">
                     <Button
                       className="botongraf"
@@ -1300,13 +1300,13 @@ function Estadisticas({ rol }) {
               </Card>
             </Col>
 
-            <Col md={6}>
+            <Col md={4}>
               <Card>
                 <Card.Header>Top 5 Clientes</Card.Header>
                 <Card.Body>
                   <canvas id="top5Clientes" width="100%" height="100%"></canvas>
                 </Card.Body>
-                <Row className="mt-4">
+                <Row className="mt-2">
                   <Col className="text-center">
                     <Button
                       className="botongraf"
@@ -1333,7 +1333,7 @@ function Estadisticas({ rol }) {
           </Row>
 
           <Row className="mt-4">
-            <Col md={6}>
+            <Col md={4}>
               <Card>
                 <Card.Header>Inversión y Beneficio por Mes</Card.Header>
                 <Card.Body>
@@ -1343,7 +1343,7 @@ function Estadisticas({ rol }) {
                     height="100%"
                   ></canvas>
                 </Card.Body>
-                <Row className="mt-4">
+                <Row className="mt-2">
                   <Col className="text-center">
                     <Button
                       className="botongraf"

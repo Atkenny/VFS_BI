@@ -66,8 +66,7 @@ module.exports = (db) => {
           JOIN dim_tiempo dt ON hv.id_tiempo = dt.id_tiempo
           WHERE dt.anio = YEAR(CURDATE())
           GROUP BY dp.nombre_producto, dt.anio, dt.mes
-          ORDER BY monto_beneficio DESC
-          LIMIT 5;
+          ORDER BY monto_beneficio DESC;
     `;
 
     // Ejecutar la consulta
