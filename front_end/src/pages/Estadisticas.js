@@ -1255,7 +1255,7 @@ function Estadisticas({ rol }) {
           backgroundColor: "#303030",
           minHeight: "100vh",
           paddingTop: "70px",
-          marginTop: "0px",
+          marginTop: "30px",
         }}
         className="espaciado"
         fluid
@@ -1268,7 +1268,7 @@ function Estadisticas({ rol }) {
 
         <div>
           <Row className="mt-4">
-            <Col md={4}>
+            <Col md={6}>
               <Card>
                 <Card.Header>Productos por Categoría</Card.Header>
                 <Card.Body>
@@ -1300,7 +1300,7 @@ function Estadisticas({ rol }) {
               </Card>
             </Col>
 
-            <Col md={4}>
+            <Col md={6}>
               <Card>
                 <Card.Header>Top 5 Clientes</Card.Header>
                 <Card.Body>
@@ -1332,8 +1332,8 @@ function Estadisticas({ rol }) {
             </Col>
           </Row>
 
-          <Row className="mt-4">
-            <Col md={4}>
+          <Row>
+            <Col md={6}>
               <Card>
                 <Card.Header>Inversión y Beneficio por Mes</Card.Header>
                 <Card.Body>

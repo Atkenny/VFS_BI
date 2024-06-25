@@ -868,7 +868,7 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
         const id_venta = result.insertId;
 
-        const sqlDetalle = 'INSERT INTO Detalle_venta (id_venta, id_producto, precio_unitario, cantidad_compra) VALUES ?,?';
+        const sqlDetalle = 'INSERT INTO Detalle_venta (id_venta, id_producto, precio_unitario, cantidad_compra) VALUES ?';
         const values = detalle_venta.map((item) => [id_venta, item.id_producto, item.precio_unitario, item.cantidad_compra]);
         db.query(sqlDetalle, [values], (err, result) => {
             if (err) {

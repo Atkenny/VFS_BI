@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Container, Card, Row, Col, Form, Modal, FloatingLabel, Table } from 'react-bootstrap';
-import { FaSearch, FaPlus, FaTrashAlt } from 'react-icons/fa';
+import { FaSearch, FaPlus } from 'react-icons/fa';
 import Header from '../components/Header';
 import '../styles/App.css';
+import { FaTrashCan } from 'react-icons/fa6';
 
 function Venta({ rol }) {
 
@@ -392,12 +393,8 @@ function Venta({ rol }) {
                                                         <td>{detalle.cantidad_compra}</td>
                                                         <td>{detalle.cantidad_compra * detalle.precio_unitario}</td>
                                                         <td className="align-button">
-                                                            <button
-                                                                size="sm"
-                                                                onClick={() => EliminarDetalle(detalle.id_producto)}
-                                                                variant="danger"
-                                                            >
-                                                                <FaTrashAlt />
+                                                            <button variant="danger" onClick={() => EliminarDetalle(detalle.id_producto)}>
+                                                                <FaTrashCan />
                                                             </button>
                                                         </td>
                                                     </tr>
