@@ -88,12 +88,14 @@ function ListaCitas({ rol }) {
     };
 
     const handleFormChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
+
         setFormData({
             ...formData,
-            [name]: type === 'checkbox' ? checked : value,
+            [name]: name === 'estado_cita' ? (value === 'true') : value,
         });
     };
+
 
     const handleUpdate = () => {
         fetch(`http://localhost:5000/crud/update_cita/${selectedCita.id_cita}`, {
@@ -110,6 +112,7 @@ function ListaCitas({ rol }) {
             .catch((error) => console.error('Error al actualizar el registro:', error));
     };
 
+
     const handleDelete = (id_cita) => {
         if (window.confirm('¿Seguro que deseas eliminar esta cita?')) {
             fetch(`http://localhost:5000/crud/delete_cita/${id_cita}`, { method: 'DELETE' })
@@ -122,7 +125,8 @@ function ListaCitas({ rol }) {
 
     const handleEstadoChange = (id_cita, estado) => {
         const updatedCita = citas.find(cita => cita.id_cita === id_cita);
-        updatedCita.estado_cita = estado;
+        updatedCita.estado_cita = estado === 'Aprobada' ? true : false;
+
         fetch(`http://localhost:5000/crud/update_cita/${id_cita}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -168,8 +172,7 @@ function ListaCitas({ rol }) {
                                 <th>Fecha</th>
                                 <th>Hora</th>
                                 <th>Comentario</th>
-                                <th>Aprobado</th>
-                                <th>Rechazado</th>
+                                <th>Estado Cita</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
                             </tr>
@@ -184,19 +187,8 @@ function ListaCitas({ rol }) {
                                     <td>{formatDateForInput(cita.fecha_cita)}</td>
                                     <td>{cita.hora_cita}</td>
                                     <td>{cita.comentario}</td>
-                                    <td>
-                                        <Form.Check
-                                            type="checkbox"
-                                            checked={cita.estado_cita === 'Aprobada'}
-                                            onChange={() => handleEstadoChange(cita.id_cita, 'Aprobada')}
-                                        />
-                                    </td>
-                                    <td>
-                                        <Form.Check
-                                            type="checkbox"
-                                            checked={cita.estado_cita === 'Rechazada'}
-                                            onChange={() => handleEstadoChange(cita.id_cita, 'Rechazada')}
-                                        />
+                                    <td className={cita.estado_cita ? 'text-success' : 'text-danger'}>
+                                        {cita.estado_cita ? 'Aprobada' : 'Rechazada'}
                                     </td>
                                     <td>
                                         <Button variant="primary" onClick={() => openModal(cita)}><FaPencil /></Button>
@@ -206,6 +198,7 @@ function ListaCitas({ rol }) {
                                     </td>
                                 </tr>
                             ))}
+
                         </tbody>
                     </Table>
                 </Card.Body>
@@ -290,15 +283,19 @@ function ListaCitas({ rol }) {
 
                                     <Col sm="12" md="6">
                                         <FloatingLabel controlId="estado_cita" label="Estado de la cita">
-                                            <Form.Check
-                                                type="checkbox"
-                                                label="Estado de la cita"
+                                            <Form.Select
+                                                aria-label="estado_cita"
                                                 name="estado_cita"
-                                                checked={formData.estado_cita}
+                                                value={formData.estado_cita}
                                                 onChange={handleFormChange}
-                                            />
+                                            >
+                                                <option value="">Seleccione un estado</option>
+                                                <option value="true">Aprobada</option>
+                                                <option value="false">Rechazada</option>
+                                            </Form.Select>
                                         </FloatingLabel>
                                     </Col>
+
 
 
                                     <Col sm="12">

@@ -1,6 +1,6 @@
 const express = require('express');
-const mysql = require('mysql');
-//  mysql = require('mysql2');
+// const mysql = require('mysql');
+const mysql = require('mysql2');
 const cors = require('cors');
 
 const app = express();
@@ -12,8 +12,8 @@ app.use(express.json({ limit: '50mb' }));
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '@kekodroid',
- // password: '2105Oney',
+  // password: '@kekodroid',
+  password: '2105Oney',
   database: 'database_vfs'
 });
 
@@ -29,16 +29,16 @@ db.connect((err) => {
 const db2 = mysql.createConnection({
   host: 'localhost',
   user: 'root',
- password: '@kekodroid',
-//  password: '2105Oney',
+  //  password: '@kekodroid',
+  password: '2105Oney',
   database: 'datamart'
 });
 
 db2.connect((err) => {
   if (err) {
-      console.error('Error de conexión a la segunda base de datos:', err);
+    console.error('Error de conexión a la segunda base de datos:', err);
   } else {
-      console.log('Conexión exitosa a la segunda base de datos');
+    console.log('Conexión exitosa a la segunda base de datos');
   }
 });
 

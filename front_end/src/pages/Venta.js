@@ -46,17 +46,22 @@ function Venta({ rol }) {
     const AgregarDetalleProducto = (e) => {
         e.preventDefault();
         if (selectedProducto && cantidad_compra) {
-            const nuevoDetalle = {
-                id_producto: selectedProducto.id_producto,
-                nombre_producto: selectedProducto.nombre_producto,
-                precio_unitario: selectedProducto.precio_venta,
-                cantidad_compra: parseInt(cantidad_compra),
-            };
-           
-            setDetalle_venta([...detalle_venta, nuevoDetalle])
-            setPrecio_unitario('');
-            setCantidad_compra('');
-            setSelectedProducto('');
+            if (cantidad_compra > selectedProducto.cantidad) {
+                alert('Cantidad en stock insuficiente');
+            } else {
+                const nuevoDetalle = {
+                    id_producto: selectedProducto.id_producto,
+                    nombre_producto: selectedProducto.nombre_producto,
+                    precio_unitario: selectedProducto.precio_venta,
+                    cantidad_compra: parseInt(cantidad_compra),
+
+                };
+
+                setDetalle_venta([...detalle_venta, nuevoDetalle])
+                setPrecio_unitario('');
+                setCantidad_compra('');
+                setSelectedProducto('');
+            }
         } else {
             alert('Asegúrese de seleccionar un producto o ingresar una cantidad.');
         }
@@ -71,7 +76,7 @@ function Venta({ rol }) {
         const id_cliente = cliente.id_cliente.toString();
         const nombre1_cliente = cliente.nombre1_cliente ? cliente.nombre1_cliente.toLowerCase() : '';
         const apellido1_cliente = cliente.apellido1_cliente ? cliente.apellido1_cliente.toLowerCase() : '';
-       const search = searchQuery.toLowerCase();
+        const search = searchQuery.toLowerCase();
 
         return (
             id_cliente.includes(search) ||
@@ -102,7 +107,7 @@ function Venta({ rol }) {
         setFormData({
             ...formData,
             id_cliente: cliente.id_cliente,
-    });
+        });
         closeClienteModal();
     };
 
@@ -217,7 +222,7 @@ function Venta({ rol }) {
 
     const registrarVenta = (e) => {
         e.preventDefault();
-    
+
         if (selectedCliente && selectedTipoPago && selectedEntrega && detalle_venta.length > 0) {
             const data = {
                 id_cliente: selectedCliente.id_cliente,
@@ -227,7 +232,7 @@ function Venta({ rol }) {
                 hora_compra,
                 detalle_venta, // Asumiendo que detalle_venta incluye el precio_venta
             };
-    
+
             fetch('http://localhost:5000/crud/createventa', {
                 method: 'POST',
                 headers: {
@@ -252,9 +257,9 @@ function Venta({ rol }) {
         } else {
             alert('Asegúrese de completar la información necesaria para registrar la venta.');
         }
-    };    
-    
-    
+    };
+
+
 
     return (
         <div>
@@ -365,7 +370,7 @@ function Venta({ rol }) {
                                 </Col>
 
                                 <Col sm="12" md="2" lg="2" className="d-flex align-items-center">
-                                    <button id="faplus"  onClick={AgregarDetalleProducto} variant="outline-success" size="lg">
+                                    <button id="faplus" onClick={AgregarDetalleProducto} variant="outline-success" size="lg">
                                         <FaPlus />
                                     </button>
                                 </Col>
@@ -393,9 +398,9 @@ function Venta({ rol }) {
                                                         <td>{detalle.cantidad_compra}</td>
                                                         <td>{detalle.cantidad_compra * detalle.precio_unitario}</td>
                                                         <td className="align-button">
-                                                            <button variant="danger" onClick={() => EliminarDetalle(detalle.id_producto)}>
+                                                            <Button variant="danger" onClick={() => EliminarDetalle(detalle.id_producto)}>
                                                                 <FaTrashCan />
-                                                            </button>
+                                                            </Button>
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -480,52 +485,52 @@ function Venta({ rol }) {
             </Modal>
 
             <Modal show={showProductoModal} onHide={closeProductoModal} centered scrollable size="lg">
-    <Modal.Header closeButton>
-        <Modal.Title>Seleccionar Producto</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-        <Row className="mb-3">
-            <Col sm="12" md="12" lg="12">
-                <FloatingLabel controlId="search" label="Buscar">
-                    <Form.Control
-                        type="text"
-                        placeholder="Buscar"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                    />
-                </FloatingLabel>
-            </Col>
-        </Row>
+                <Modal.Header closeButton>
+                    <Modal.Title>Seleccionar Producto</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Row className="mb-3">
+                        <Col sm="12" md="12" lg="12">
+                            <FloatingLabel controlId="search" label="Buscar">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Buscar"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                />
+                            </FloatingLabel>
+                        </Col>
+                    </Row>
 
-        <Table striped bordered hover responsive>
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Imagen</th>
-                    <th>Precio Unitario</th>
-                    <th>Seleccionar</th>
-                </tr>
-            </thead>
-            <tbody>
-                {producto.map((producto) => (
-                    <tr key={producto.id_producto} onClick={() => selectProducto(producto)}>
-                        <td>{producto.nombre_producto}</td>
-                        <td>
-                            <img src={producto.imagen} alt={producto.nombre_producto} style={{ width: '50px' }} />
-                        </td>
-                        <td>{producto.precio_venta}</td>
-                        <td>
-                            <Button variant="primary" size="sm" onClick={() => selectProducto(producto)}>
-                                Seleccionar
-                            </Button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </Table>
+                    <Table striped bordered hover responsive>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Imagen</th>
+                                <th>Precio Unitario</th>
+                                <th>Seleccionar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {producto.map((producto) => (
+                                <tr key={producto.id_producto} onClick={() => selectProducto(producto)}>
+                                    <td>{producto.nombre_producto}</td>
+                                    <td>
+                                        <img src={producto.imagen} alt={producto.nombre_producto} style={{ width: '50px' }} />
+                                    </td>
+                                    <td>{producto.precio_venta}</td>
+                                    <td>
+                                        <Button variant="primary" size="sm" onClick={() => selectProducto(producto)}>
+                                            Seleccionar
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
 
-    </Modal.Body>
-</Modal>
+                </Modal.Body>
+            </Modal>
 
 
         </div>

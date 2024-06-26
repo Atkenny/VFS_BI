@@ -16,7 +16,7 @@ const upload = multer({ storage: storage });
 module.exports = (db) => {
 
 
-/* ----------------------Estadisticas ------------------------------- */
+  /* ----------------------Estadisticas ------------------------------- */
 
 
   // Generar estadistica de pastel
@@ -780,7 +780,6 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
   //Actualizar
   router.put("/update_cita/:id_cita", (req, res) => {
     const id_cita = req.params.id_cita;
-
     const {
       id_cliente,
       id_empleado,
@@ -791,18 +790,18 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
       comentario,
     } = req.body;
 
+    console.log('Datos recibidos:', req.body);  // Añadir esta línea para depuración
+
     if (
       !id_cliente ||
       !id_empleado ||
       !tipo_servicio ||
       !fecha_cita ||
       !hora_cita ||
-      !estado_cita ||
+      estado_cita === undefined ||  // Asegurarse de que estado_cita está definido
       !comentario
     ) {
-      return res
-        .status(400)
-        .json({ error: "Todos los campos son obligatorios" });
+      return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
     const sql = `
@@ -817,35 +816,20 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
       tipo_servicio,
       fecha_cita,
       hora_cita,
-      estado_cita,
+      estado_cita ? 1 : 0,  // Convertir booleano a entero
       comentario,
       id_cita,
     ];
 
-    // Ejecuta la consulta
+    console.log('Consulta SQL:', sql);  // Añadir esta línea para depuración
+    console.log('Valores:', values);    // Añadir esta línea para depuración
+
     db.query(sql, values, (err, result) => {
       if (err) {
         console.error("Error al actualizar el registro:", err);
         res.status(500).json({ error: "Error al actualizar el registro" });
       } else {
         res.status(200).json({ message: "Registro actualizado con éxito" });
-      }
-    });
-  });
-
-  //Eliminar
-  router.delete("/delete_cita/:id_cita", (req, res) => {
-    const id_cita = req.params.id_cita;
-
-    const sql = "DELETE FROM Cita WHERE id_cita = ?";
-
-    // Ejecuta la consulta
-    db.query(sql, [id_cita], (err, result) => {
-      if (err) {
-        console.error("Error al eliminar el registro:", err);
-        res.status(500).json({ error: "Error al eliminar el registro" });
-      } else {
-        res.status(200).json({ message: "Registro eliminado con éxito" });
       }
     });
   });
@@ -861,32 +845,32 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
     const sqlVenta = 'INSERT INTO Venta (id_cliente, id_tipo_pago, id_entrega, fecha_compra, hora_compra) VALUES (?,?,?,?,?)';
     db.query(sqlVenta, [id_cliente, id_tipo_pago, id_entrega, fecha_compra, hora_compra], (err, result) => {
+      if (err) {
+        console.error('Error al insertar venta:', err);
+        return res.status(500).json({ error: 'Error al insertar venta' });
+      }
+
+      const id_venta = result.insertId;
+
+      const sqlDetalle = 'INSERT INTO Detalle_venta (id_venta, id_producto, precio_unitario, cantidad_compra) VALUES ?';
+      const values = detalle_venta.map((item) => [id_venta, item.id_producto, item.precio_unitario, item.cantidad_compra]);
+      db.query(sqlDetalle, [values], (err, result) => {
         if (err) {
-            console.error('Error al insertar venta:', err);
-            return res.status(500).json({ error: 'Error al insertar venta' });
+          console.error('Error al insertar detalle de venta:', err);
+          return res.status(500).json({ error: 'Error al insertar detalle de venta' });
         }
 
-        const id_venta = result.insertId;
-
-        const sqlDetalle = 'INSERT INTO Detalle_venta (id_venta, id_producto, precio_unitario, cantidad_compra) VALUES ?';
-        const values = detalle_venta.map((item) => [id_venta, item.id_producto, item.precio_unitario, item.cantidad_compra]);
-        db.query(sqlDetalle, [values], (err, result) => {
-            if (err) {
-                console.error('Error al insertar detalle de venta:', err);
-                return res.status(500).json({ error: 'Error al insertar detalle de venta' });
-            }
-
-            res.status(201).json({ message: 'Venta y detalle de venta agregados con éxito' });
-        });
+        res.status(201).json({ message: 'Venta y detalle de venta agregados con éxito' });
+      });
     });
-});
+  });
 
 
 
 
-  
 
-    /*----- Crud Compra Inicio ---------------------------------------*/
+
+  /*----- Crud Compra Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_venta", (req, res) => {
@@ -1070,7 +1054,7 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
 
 
-    /*----- Crud Tipo entrega Inicio ---------------------------------------*/
+  /*----- Crud Tipo entrega Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_entrega", (req, res) => {
@@ -1209,16 +1193,16 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
   // Crear
   router.post("/create_detalle_compra", (req, res) => {
-    const { id_compra, id_producto, precio_unitario,cantidad_compra } = req.body;
+    const { id_compra, id_producto, precio_unitario, cantidad_compra } = req.body;
 
-    if (!id_compra || !id_producto || !precio_unitario|| !cantidad_compra) {
+    if (!id_compra || !id_producto || !precio_unitario || !cantidad_compra) {
       return res
         .status(400)
         .json({ error: "Todos los campos son obligatorios" });
     }
 
     const sql = `INSERT INTO Detalle_compra (id_compra, id_producto, precio_unitario,cantidad_compra) VALUES (?,?,?,?)`;
-    const values = [id_compra, id_producto, precio_unitario,cantidad_compra];
+    const values = [id_compra, id_producto, precio_unitario, cantidad_compra];
 
     // Ejecuta la consulta
     db.query(sql, values, (err, result) => {
@@ -1235,7 +1219,7 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
   router.put("/update_detalle_compra/:id_detalle_compra", (req, res) => {
     const id_detalle_compra = req.params.id_detalle_compra;
 
-    const { id_compra, id_producto, precio_unitario,cantidad_compra } = req.body;
+    const { id_compra, id_producto, precio_unitario, cantidad_compra } = req.body;
 
     if (!id_compra || !id_producto || !precio_unitario || !cantidad_compra) {
       return res
@@ -1287,7 +1271,7 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
 
 
-    /*----- Crud Reseña Inicio ---------------------------------------*/
+  /*----- Crud Reseña Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_resena", (req, res) => {
@@ -1441,7 +1425,7 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
 
 
-    /*----- Crud Lista deseo Inicio ---------------------------------------*/
+  /*----- Crud Lista deseo Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_lista_deseo", (req, res) => {
@@ -1538,7 +1522,7 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
 
 
-    /*----- Crud Lista detalle Inicio ---------------------------------------*/
+  /*----- Crud Lista detalle Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_lista_detalle", (req, res) => {
@@ -1635,7 +1619,7 @@ INNER JOIN Empleado ed ON c.id_empleado = ed.id_empleado;
 
 
 
-    /*----- Crud Proveedor Inicio ---------------------------------------*/
+  /*----- Crud Proveedor Inicio ---------------------------------------*/
 
   // Leer
   router.get("/read_proveedor", (req, res) => {
