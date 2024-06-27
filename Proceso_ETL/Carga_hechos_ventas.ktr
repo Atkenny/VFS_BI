@@ -784,8 +784,8 @@ INNER JOIN Tipo_entrega te ON V.id_entrega = te.id_entrega;
       </output>
     </remotesteps>
     <GUI>
-      <xloc>200</xloc>
-      <yloc>100</yloc>
+      <xloc>80</xloc>
+      <yloc>16</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -828,8 +828,8 @@ INNER JOIN Tipo_entrega te ON V.id_entrega = te.id_entrega;
       </output>
     </remotesteps>
     <GUI>
-      <xloc>400</xloc>
-      <yloc>96</yloc>
+      <xloc>288</xloc>
+      <yloc>16</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
